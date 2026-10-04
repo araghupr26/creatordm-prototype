@@ -162,13 +162,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .sh{display:flex;justify-content:space-between;align-items:center;padding:20px 16px 10px}
 .sh b{font-size:17px;font-weight:700;display:flex;gap:6px;align-items:center}
 .sh button{color:var(--blue);font-weight:600;font-size:14px}
-.hs{display:flex;gap:12px;overflow-x:auto;padding:0 16px 4px;scrollbar-width:none;align-items:flex-start;--rh:200px;--ph:144px}
+.hs{display:flex;gap:12px;overflow-x:auto;padding:0 16px 4px;scrollbar-width:none;align-items:flex-start}
 .hs::-webkit-scrollbar{display:none}
 .hs .card{width:144px;flex:none}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px;padding:0 16px;align-items:start;--rh:232px;--ph:179px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px;padding:0 16px;align-items:start}
 .card{display:flex;flex-direction:column;gap:6px;min-width:0;cursor:pointer}
 .th{position:relative;border-radius:14px;padding:10px;display:flex;align-items:flex-end;color:#fff;font-weight:700;font-size:15px;line-height:19px;overflow:hidden}
-.th.reel{height:var(--rh)} .th.post{height:var(--ph)}
+.th{aspect-ratio:3/4}
 .th .pl{position:absolute;top:8px;left:8px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.4);display:grid;place-items:center}
 .th .hr{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:#fff;display:grid;place-items:center}
 .th .nl{position:absolute;top:38px;left:8px;background:#fff;color:#262626;font-size:11px;font-weight:500;padding:3px 8px;border-radius:99px}
@@ -194,6 +194,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--sheet);border-radius:24px 24px 0 0;padding:10px 20px 34px;z-index:31;display:flex;flex-direction:column;gap:12px;max-height:92%;overflow-y:auto;scrollbar-width:none}
 .sheet .hd{width:36px;height:4px;border-radius:2px;background:var(--bd);align-self:center;flex:none}
 .sheet .big{position:relative;height:190px;border-radius:16px;padding:16px;display:flex;align-items:flex-end;color:#fff;font-weight:700;font-size:22px;line-height:28px;flex:none}
+.sheet .big .tp{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.4);border-radius:99px;padding:5px 10px;font-size:12px;font-weight:600;display:flex;gap:6px;align-items:center}
 .sheet .big .pl{position:absolute;top:12px;left:12px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.4);display:grid;place-items:center}
 .sheet .tt{font-weight:700;font-size:17px}
 .sheet .fr{font-size:13px;color:var(--tx2);margin-top:4px}
@@ -363,7 +364,7 @@ const SEED={
   R('r14','Dewy skin routine','dewy skin, 4 steps','@glowbymia','Sep 27',6,'coral','post',['Makeup'],'button','glowbymia.com/dewy',"On its way 🚀 The four-step routine with budget swaps.",{btn:'Get the routine'}),
   R('r4','Fall capsule, 20 pieces','fall capsule, 20 pieces','@styleby_sam','Sep 26',7,'brown','reel',['Lifestyle'],'button','stylebysam.com/capsule',"Sent you the link! ✅ 20 pieces with outfit combinations.",{btn:'Get the list'}),
   R('r17','One-pan chicken dinners','one-pan chicken x5','@15minkitchen','Sep 25',8,'orange','post',['Cooking'],'button','15min.kitchen/one-pan',"Just sent it over! 🍗 Five dinners and a shopping list.",{pat:'keyword',btn:'Get the recipes'}),
-  R('r2','Resume template for PMs','PM resume that works','@resumewithrachel','Sep 21',12,'teal','post',['Careers'],'button','rachel.co/pm-resume',"Here's the template! Use the bullet formula from the reel.",{pinned:true,pat:'gate2',btn:'Get the template'}),
+  R('r2','Resume template for PMs','PM resume that works','@resumewithrachel','Sep 21',12,'teal','post',['Careers'],'button','rachel.co/pm-resume',"Here's the template! Use the bullet formula from my post.",{pinned:true,pat:'gate2',btn:'Get the template'}),
   R('r16','ChatGPT prompts for freelancers','prompts for freelancers','@aiwithnate','Sep 22',11,'indigo','post',['AI','Careers'],'button','aiwithnate.com/freelance',"Done ✅ The prompt pack for proposals, invoices and client emails.",{pat:'tap',btn:'Get the pack'}),
   R('r7','Sourdough starter guide','sourdough from scratch','@breadbyben','Sep 18',15,'green','reel',['Cooking'],'text','breadbyben.co/starter',"Sent! 🍞 Your seven-day starter schedule is here: breadbyben.co/starter"),
   R('r5','15-minute garlic pasta','garlic pasta in 15','@15minkitchen','Sep 12',21,'orange','reel',['Cooking'],'button','15min.kitchen/garlic-pasta',"Sent ✨ Garlic pasta in 15 minutes, the recipe is below.",{btn:'Get the recipe'}),
@@ -393,9 +394,9 @@ const POSTS=[
  {id:'u1',by:'jake',c:'indigo',sub:'Chicago, Illinois',kind:'dice',likes:'31',com:'4',shr:'1',cap:'game night with the crew 🎲',time:'3 hours ago'},
  {id:'u2',by:'northwindshoes',c:'orange',sub:'Sponsored',kind:'shoe',likes:'1,204',com:'38',shr:'92',cap:'New season, new pace. Free shipping this week.',time:'Sponsored'},
  {id:'u3',by:'emily',c:'coral',sub:'Lake Tahoe',kind:'sunset',likes:'48',com:'6',shr:'2',cap:'golden hour at the lake',time:'5 hours ago'},
- {id:'p1',by:'fitwithtara',c:'coral',sub:'Original audio',kind:'guide',likes:'2,184',com:'312',shr:'96',cap:"Glutes in 4 weeks, no equipment. Comment GUIDE and I'll DM you the full plan 💪",time:'2 hours ago',creator:true},
+ {id:'p1',by:'fitwithtara',c:'coral',sub:'Original audio',type:'reel',kind:'guide',likes:'2,184',com:'312',shr:'96',cap:"Glutes in 4 weeks, no equipment. Comment GUIDE and I'll DM you the full plan 💪",time:'2 hours ago',creator:true},
  {id:'u4',by:'olivia',c:'coral',sub:'Austin, Texas',kind:'dog',likes:'212',com:'19',shr:'7',cap:'meet Biscuit 🐶',time:'7 hours ago'},
- {id:'p3',by:'15minkitchen',c:'orange',sub:'Suggested for you',kind:'food',likes:'9,031',com:'1,204',shr:'410',cap:'Garlic pasta in 15 minutes. Comment PASTA for the recipe 🍝',time:'1 day ago',creator:true},
+ {id:'p3',by:'15minkitchen',c:'orange',sub:'Original audio',type:'reel',kind:'food',likes:'9,031',com:'1,204',shr:'410',cap:'Garlic pasta in 15 minutes. Comment PASTA for the recipe 🍝',time:'1 day ago',creator:true},
  {id:'u5',by:'tyler',c:'navy',sub:'Boulder, Colorado',kind:'run',likes:'88',com:'9',shr:'3',cap:'sunday long run, worth the early alarm',time:'1 day ago'},
  {id:'u6',by:'sophia',c:'purple',sub:'Portland, Oregon',kind:'coffee',likes:'140',com:'12',shr:'5',cap:'slow saturday ☕',time:'2 days ago'}];
 
@@ -504,7 +505,7 @@ const creatorRow=g=>`<button class="res" data-a="creator" data-v="${g.by}">${av(
 function creatorsSection(){ const l=creatorsList(); if(!l.length) return '';
   return `<div class="sh"><b>${ic('profile',16,'var(--tx)')}Creators you engaged with</b><button data-a="seeall" data-v="Creators">See all</button></div><div class="hs hc">${l.slice(0,8).map(g=>`<button class="ct" data-a="creator" data-v="${g.by}">${av(g.by,g.c,64,true)}<div class="cn1">${dn(g.by)}</div><div class="cn2">${g.items.length} resource${g.items.length>1?'s':''}</div></button>`).join('')}</div>`; }
 function groupCard(by){ const g=creatorsList().find(x=>x.by===by); const cols=g.items.slice(0,3).map(r=>r.color);
-  return `<div class="card" data-a="creator" data-v="${by}"><div class="th reel grp"><div class="stk2">${cols.map((c,i)=>`<i style="background:${col(c)};left:${i*14}px;top:${i*8}px;transform:rotate(${(i-1)*5}deg)"></i>`).join('')}</div><span class="cnt">${g.items.length} resources</span></div><div class="n">${dn(by)}</div><div class="m">In one chat · latest ${agoTxt(g.last)}</div></div>`; }
+  return `<div class="card" data-a="creator" data-v="${by}"><div class="th grp"><div class="stk2">${cols.map((c,i)=>`<i style="background:${col(c)};left:${i*14}px;top:${i*8}px;transform:rotate(${(i-1)*5}deg)"></i>`).join('')}</div><span class="cnt">${g.items.length} resources</span></div><div class="n">${dn(by)}</div><div class="m">In one chat · latest ${agoTxt(g.last)}</div></div>`; }
 function groupedRecent(a){ const cnt={}; a.forEach(r=>{cnt[r.by]=(cnt[r.by]||0)+1;}); const done=new Set(); const out=[];
   a.forEach(r=>{ if(cnt[r.by]>=2){ if(done.has(r.by)) return; done.add(r.by); out.push(groupCard(r.by)); } else out.push(card(r)); }); return out; }
 function creatorsAll(){ const l=creatorsList();
@@ -531,15 +532,17 @@ const ART2={
  dog:{bg:'linear-gradient(135deg,#F6D365,#F28C28)',e:'🐶'},
  run:{bg:'linear-gradient(180deg,#9AD1F5,#2F8F5B)',e:'🏔️'},
  coffee:{bg:'linear-gradient(135deg,#A0522D,#F6D365)',e:'☕'}};
-function art(kind){
-  if(kind==='guide') return `<div class="media" style="background:linear-gradient(160deg,#F4515F,#C2185B 60%,#7C4DEB)"><div class="big"><b>Comment<br>GUIDE</b><span>for my free 4-week glute plan</span></div><div class="rl">${ic('reels',14,'#fff')}Reel</div></div>`;
+const reelChip=`<div class="rl">${ic('reels',14,'#fff')}Reel</div>`;
+function art(kind,type){ const h=art0(kind); return type==='reel'?h.replace(/<\/div>$/,reelChip+'</div>'):h; }
+function art0(kind){
+  if(kind==='guide') return `<div class="media" style="background:linear-gradient(160deg,#F4515F,#C2185B 60%,#7C4DEB)"><div class="big"><b>Comment<br>GUIDE</b><span>for my free 4-week glute plan</span></div></div>`;
   if(kind==='sunset') return `<div class="media" style="background:linear-gradient(180deg,#FFC27A,#F4515F 55%,#3B4FD8)"><div style="position:absolute;left:50%;top:44%;width:120px;height:120px;border-radius:50%;background:#FFE9A8;transform:translateX(-50%)"></div><div style="position:absolute;left:-20%;bottom:-18%;width:90%;height:50%;border-radius:50%;background:#1B2A6B"></div><div style="position:absolute;right:-25%;bottom:-24%;width:100%;height:46%;border-radius:50%;background:#12194A"></div></div>`;
   if(kind==='food') return `<div class="media" style="background:linear-gradient(135deg,#F28C28,#F6D365)"><div style="position:absolute;left:50%;top:50%;width:300px;height:300px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 0 14px rgba(255,255,255,.35)"></div><div class="big" style="color:#A0522D"><b style="font-size:48px;line-height:50px">garlic<br>pasta<br>in 15</b></div></div>`;
   const a=ART2[kind]; return `<div class="media" style="background:${a.bg}"><div class="big" style="font-size:130px;line-height:1">${a.e}</div></div>`;
 }
 function feed(){
   const cc=S.commented?(S.replied?'314':'313'):'312';
-  const posts=POSTS.map(p=>{ const isP1=p.id==='p1'; const cm=isP1?cc:p.com; return `<div class="post" id="post-${p.id}"><div class="ph">${av(p.by,p.c,34,p.creator)}<div style="flex:1"><div class="nm">${p.by}</div><div class="sb">${p.sub}</div></div>${ic('more',20,'var(--tx)')}</div>${art(p.kind)}
+  const posts=POSTS.map(p=>{ const isP1=p.id==='p1'; const cm=isP1?cc:p.com; return `<div class="post" id="post-${p.id}"><div class="ph">${av(p.by,p.c,34,p.creator)}<div style="flex:1"><div class="nm">${p.by}</div><div class="sb">${p.sub}</div></div>${ic('more',20,'var(--tx)')}</div>${art(p.kind,p.type)}
   <div class="acts"><button>${ic('heart',26,'var(--tx)')}${p.likes}</button><button data-a="${isP1?'comments':'noop'}">${ic('comment',26,'var(--tx)')}${cm}</button><button>${ic('send',26,'var(--tx)')}${p.shr}</button><span class="bm">${ic('bookmark',26,'var(--tx)')}</span></div>
   <div class="cap"><b>${p.by}</b> ${p.cap}</div><div class="dim" data-a="${isP1?'comments':'noop'}" style="cursor:pointer">View all ${cm} comments</div><div class="dim" style="font-size:12px;padding-bottom:18px">${p.time}</div></div>`; }).join('');
   const stories=[['Your story','teal',0],['jake','indigo',1],['olivia','coral',1],['fitwithtara','coral',1],['tyler','navy',1],['sophia','purple','seen'],['15minkitchen','orange',1],['ashley','teal','seen'],['brandon','green','seen'],['emily','coral',1],['ethan','navy','seen']].map(([n,c,r])=>`<div class="st"><div style="position:relative">${av(n,c,64,r)}${r===0?`<span class="plus">${ic('plus',12,'#fff')}</span>`:''}</div><span>${n.length>10?n.slice(0,9)+'…':n}</span></div>`).join('');
@@ -588,7 +591,7 @@ function stuff(){
   const d=S.data;
   if(S.searchMode){
     const q=S.query.trim(); let inner='';
-    if(!q){ inner=S.recents.length?`<div class="rh">Recent searches<button data-a="rclear">Clear all</button></div>${S.recents.map((t,i)=>`<div class="rr"><button style="display:flex;align-items:center;gap:12px;flex:1;min-width:0" data-a="rpick" data-v="${i}">${ic('clock',20,'var(--tx2)')}<span style="font-size:15px">${t}</span></button><button class="x" data-a="rdel" data-v="${i}" aria-label="Delete">${ic('close',18,'var(--tx2)')}</button></div>`).join('')}`:`<div class="empty">No recent searches.<br>Search by what the reel was about, who sent it, or a topic.</div>`; }
+    if(!q){ inner=S.recents.length?`<div class="rh">Recent searches<button data-a="rclear">Clear all</button></div>${S.recents.map((t,i)=>`<div class="rr"><button style="display:flex;align-items:center;gap:12px;flex:1;min-width:0" data-a="rpick" data-v="${i}">${ic('clock',20,'var(--tx2)')}<span style="font-size:15px">${t}</span></button><button class="x" data-a="rdel" data-v="${i}" aria-label="Delete">${ic('close',18,'var(--tx2)')}</button></div>`).join('')}`:`<div class="empty">No recent searches.<br>Search by what the reel or post was about, who sent it, or a topic.</div>`; }
     else { const hits=d.res.filter(r=>matches(r,q)); const cm=creatorsList().filter(g=>cmatch(g,q)); inner=cm.map(creatorRow).join('')+(hits.length||cm.length?hits.map(r=>`<button class="res" data-a="card" data-v="${r.id}"><div class="tb" style="background:${col(r.color)}"></div><div><div class="n">${rt(r)}</div><div class="m">${r.type==='reel'?'Reel':'Post'} · ${dn(r.by)}, ${r.date}</div></div></button>`).join(''):`<div class="empty">Nothing matches "${q}".</div>`); }
     return `<div class="col">${status()}<div class="sbar"><div class="search">${ic('search',18,'var(--tx)')}<input id="q" placeholder="Search what you remember" value="${S.query.replace(/"/g,'&quot;')}">${S.query?`<button data-a="qclear">${ic('close',16,'var(--tx2)')}</button>`:''}</div><button data-a="sclose">Cancel</button></div><div class="body" id="body">${inner}</div></div>${tabbar('inbox')}`;
   }
@@ -640,7 +643,7 @@ const linkify=(r,txt)=>r.src==='text'?txt.replace(r.link,`<a class="ulk" data-a=
 function sheet(){
   const r=findRes(S.sheet); if(!r) return ''; const isMsg=r.src==='msg'; const nz=r.noise.after; const kind=r.type==='reel'?'Reel':'Post'; const nres=S.data.res.filter(x=>x.by===r.by).length;
   const body=isMsg?`<div class="quote">${r.lines.map(l=>l.u?`<div>• ${l.t}: <a class="ulk" data-a="openurl" data-v="${l.u}">${l.u}</a></div>`:`<div style="margin-bottom:6px">${l.t}</div>`).join('')}</div>`:`<div class="said">“${linkify(r,r.said)}”</div>`;
-  return `<div class="scrim" data-a="close"></div><div class="sheet"><div class="hd"></div><div class="big" style="background:${col(r.color)}"><span class="pl">${ic(r.type==='reel'?'play':'image',12,'#fff',r.type==='reel')}</span>${r.thumb}</div>
+  return `<div class="scrim" data-a="close"></div><div class="sheet"><div class="hd"></div><div class="big" style="background:${col(r.color)}"><span class="tp">${ic(r.type==='reel'?'reels':'image',13,'#fff')}${kind}</span>${r.thumb}</div>
   <div><div class="tt">${rt(r)}</div><div class="fr">${r.alias?'Original: '+r.title+' · ':''}${kind} from ${dn(r.by)}, ${r.date}${r.tags.length?' · '+r.tags.join(', '):''}</div></div><div class="lr"><button data-a="label" data-v="res:${r.id}">${ic('compose',14,'var(--tx)')}Rename</button><button data-a="creator" data-v="${r.by}">${ic('profile',14,'var(--tx)')}${dn(r.by)} · ${nres} resource${nres>1?'s':''}</button></div>
   <div class="src">What ${r.by} said</div>${body}<div class="src">${kind} caption: ${S.capOpen===r.id?r.cap:shortCap(r.cap)}${needMore(r.cap)?` <button data-a="capmore" data-v="${r.id}">${S.capOpen===r.id?'less':'more'}</button>`:''}</div><div class="src">${DET(r)}</div>${isMsg?'':`<div class="ln">Link to ${host(r.link)}</div>`}
   ${nz?`<div class="nz">${ic('check',14,'var(--tx2)')}<span>${nz} messages after the link are tucked away.</span></div>`:''}
