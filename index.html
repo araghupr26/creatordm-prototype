@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>creatorDM prototype: DM to Link</title>
+<meta name="description" content="Clickable concept prototype for DM to Link, a library for the links and resources creators send through comment-to-DM automations. Educational concept, not affiliated with Meta.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="creatorDM prototype: DM to Link">
+<meta property="og:description" content="Clickable concept prototype. Educational, not affiliated with Meta. Handles and people are invented.">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#EDEDF0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236A40F0'/%3E%3Cpath d='M9 8h7a8 8 0 0 1 0 16H9z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{
+  --media-indigo:#3B4FD8; --media-teal:#1F9D8A; --media-purple:#7C4DEB; --media-brown:#A0522D;
+  --media-orange:#F28C28; --media-coral:#F4515F; --media-navy:#1B2A6B; --media-green:#2F8F5B;
+  --stage:#EDEDF0; --ig-grad:linear-gradient(45deg,#FEDA75,#FA7E1E,#D62976,#962FBF,#4F5BD5);
+}
+.screen[data-t=dark]{--bg:#000;--bg2:#262626;--sheet:#121212;--tx:#F5F5F5;--tx2:#A8A8A8;--bd:#363636;--bub:#202226;--bubin:#2E3036;--stack:#3A3020;--link:#8A8AFF;--inv:#F5F5F5;--invt:#000}
+.screen[data-t=light]{--bg:#fff;--bg2:#EFEFEF;--sheet:#fff;--tx:#262626;--tx2:#737373;--bd:#DBDBDB;--bub:#EFEFEF;--bubin:#E2E2E6;--stack:#FFF0C7;--link:#4B4BE0;--inv:#262626;--invt:#fff}
+.screen{--blue:#0095F6;--red:#FF3040;--sent:#6A40F0;--amber:#F5A623;--badge:#F5A623}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;background:var(--stage);color:#262626;min-height:100vh;display:flex}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:inherit}
+.panel{width:310px;flex:none;padding:26px 22px;border-right:1px solid #DBDBDB;background:#fff;overflow-y:auto;height:100vh;position:sticky;top:0}
+.panel h1{font-size:22px;line-height:28px}
+.panel p.sub{color:#737373;font-size:13px;line-height:18px;margin:6px 0 16px}
+.seg{display:flex;background:#EFEFEF;border-radius:12px;padding:3px;margin-bottom:10px}
+.seg button{flex:1;text-align:center;padding:7px 0;border-radius:10px;font-size:13px;font-weight:600;color:#737373}
+.seg button.on{background:#fff;color:#262626;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.lab{font-size:11px;color:#737373;margin:0 0 4px 2px}
+.panel h2{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#737373;margin:18px 0 8px}
+.idx{display:flex;flex-direction:column;gap:2px}
+.idx button{padding:7px 10px;border-radius:8px;font-size:13px;display:flex;gap:8px;align-items:center}
+.idx button:hover{background:#EFEFEF}
+.idx button.cur{background:#EEF0FF;font-weight:600}
+.idx b{font-weight:600;min-width:28px;color:#737373;font-size:12px}
+.tag{font-size:10px;font-weight:600;padding:1px 6px;border-radius:99px;background:#E4F6EA;color:#1B7A45;margin-left:auto}
+.tag.later{background:#E6E6FA;color:#4B4BA8}
+.next{width:100%;margin:6px 0 4px;background:#6A40F0;color:#fff;border-radius:12px;padding:11px;text-align:center;font-weight:600;font-size:14px}
+.foot{margin-top:24px;font-size:11px;line-height:15px;color:#737373}
+.stage{flex:1;display:flex;align-items:center;justify-content:center;padding:20px;min-width:0}
+.scaler{transform-origin:center center}
+.phone{width:422px;height:894px;border-radius:62px;background:#111;padding:10px;box-shadow:0 20px 60px rgba(0,0,0,.28)}
+.screen{position:relative;width:402px;height:874px;border-radius:52px;overflow:hidden;background:var(--bg);color:var(--tx)}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:34px;border-radius:20px;background:#000;z-index:60}
+.status{height:54px;display:flex;justify-content:space-between;align-items:center;padding:14px 36px 0;font-weight:600;font-size:15px;flex:none}
+.status .r{display:flex;gap:6px;align-items:center;font-size:12px}
+.bat{width:25px;height:13px;border:1px solid var(--tx2);border-radius:4px;padding:1.5px}
+.bat i{display:block;width:17px;height:8px;background:var(--tx);border-radius:2px}
+.col{display:flex;flex-direction:column;height:100%}
+.hdr{min-height:56px;display:flex;align-items:center;padding:0 16px;gap:12px;flex:none}
+.hdr .t{font-weight:700;font-size:17px;flex:1;text-align:center}
+.hdr .sp{width:24px}
+.body{flex:1;overflow-y:auto;scrollbar-width:none;padding-bottom:120px}
+.body.nopad{padding-bottom:96px}
+.body::-webkit-scrollbar{display:none}
+.ring{padding:2px;border-radius:50%;background:var(--ig-grad);flex:none;display:grid;place-items:center}
+.ring>.av{border:2px solid var(--bg)}
+.av{border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;flex:none}
+.tabbar{position:absolute;left:20px;bottom:24px;width:362px;height:64px;border-radius:32px;background:var(--bg);border:1px solid var(--bd);box-shadow:0 4px 16px rgba(0,0,0,.25);display:flex;justify-content:space-between;align-items:center;padding:0 8px;z-index:10}
+.tabbar button{width:64px;height:48px;border-radius:24px;display:grid;place-items:center;position:relative}
+.tabbar button.on{background:var(--bg2)}
+.tabbar .bd{position:absolute;top:6px;right:16px;background:var(--red);color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:grid;place-items:center}
+/* feed */
+.fh{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:48px;flex:none}
+.fh .c{font-weight:700;font-size:20px;display:flex;align-items:center;gap:4px}
+.stories{display:flex;gap:14px;padding:6px 16px 12px;overflow-x:auto;scrollbar-width:none}
+.stories::-webkit-scrollbar{display:none}
+.st{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:12px;color:var(--tx);width:68px;flex:none}
+.st .plus{position:absolute;right:-2px;bottom:-2px;width:20px;height:20px;border-radius:50%;background:var(--blue);border:2px solid var(--bg);display:grid;place-items:center}
+.post .ph{display:flex;align-items:center;gap:10px;padding:8px 16px}
+.post .ph .nm{font-weight:600;font-size:14px;line-height:16px}
+.post .ph .sb{font-size:12px;color:var(--tx2);line-height:14px}
+.media{position:relative;height:470px;overflow:hidden;color:#fff}
+.media .big{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px}
+.media .big b{font-size:60px;line-height:62px;letter-spacing:-1px;font-weight:800}
+.media .big span{font-size:17px;font-weight:600;margin-top:14px;opacity:.95}
+.media .rl{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.35);border-radius:99px;padding:6px 10px;font-size:12px;font-weight:600;display:flex;gap:6px;align-items:center}
+.acts{display:flex;align-items:center;gap:18px;padding:10px 16px 4px}
+.acts button{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600}
+.acts .bm{margin-left:auto}
+.cap{padding:2px 16px 4px;font-size:14px;line-height:19px}
+.cap b{font-weight:600}
+.dim{color:var(--tx2);font-size:14px;padding:0 16px 6px}
+/* messages */
+.search{margin:4px 16px 12px;height:40px;border-radius:12px;background:var(--bg2);display:flex;align-items:center;gap:8px;padding:0 12px;color:var(--tx2);width:calc(100% - 32px);font-size:15px}
+.search input{flex:1;border:0;background:none;outline:none;font:inherit;font-size:15px;color:var(--tx)}
+.search input::placeholder{color:var(--tx2)}
+.sbar{display:flex;align-items:center;gap:12px;padding:0 16px 8px}
+.sbar .search{margin:0;flex:1}
+.sbar>button{font-size:15px;font-weight:600;color:var(--tx)}
+.notes{display:flex;gap:14px;padding:0 16px 14px}
+.note{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--tx2);width:66px;position:relative;padding-top:20px}
+.note i{position:absolute;top:0;background:var(--bg2);color:var(--tx);border-radius:12px;padding:3px 8px;font-style:normal;font-size:10px;white-space:nowrap}
+.mh{display:flex;justify-content:space-between;align-items:center;padding:0 16px 8px;font-weight:700;font-size:16px}
+.mh span{color:var(--blue);font-weight:600;font-size:14px}
+.row{display:flex;align-items:center;gap:12px;padding:0 16px;height:74px;width:100%}
+.row.flash{outline:2px solid var(--amber);outline-offset:-2px;background:rgba(245,166,35,.12)}
+.row .tx{flex:1;min-width:0}
+.row .nm{font-size:15px;line-height:19px}
+.row .pv{font-size:14px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row.unread .nm{font-weight:700}
+.row.unread .pv{color:var(--tx);font-weight:600}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.float{position:absolute;left:20px;width:362px;bottom:100px;height:64px;border-radius:20px;background:var(--stack);border:1px solid rgba(245,166,35,.4);display:flex;align-items:center;gap:12px;padding:0 14px 0 12px;z-index:9;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.float .art{position:relative;width:44px;height:44px;flex:none}
+.float .art i{position:absolute;width:24px;height:34px;border-radius:5px;border:1.5px solid var(--stack);top:5px}
+.float .tt{font-weight:700;font-size:15px}
+.float .ss{font-size:12px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{background:var(--badge);color:#000;font-size:13px;font-weight:700;border-radius:99px;padding:2px 8px}
+/* chat */
+.cname{display:flex;flex-direction:column;flex:1;min-width:0;line-height:18px}
+.cname b{font-size:16px;font-weight:700}
+.cname span{font-size:12px;color:var(--tx2)}
+.pills{display:flex;gap:8px;padding:6px 14px 6px}
+.pills button{flex:1;height:44px;border-radius:14px;background:var(--bub);text-align:center;font-weight:600;font-size:15px;display:grid;place-items:center}
+.intro{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:22px 16px 6px}
+.intro b{font-size:17px}
+.intro .h{color:var(--tx2);font-size:14px}
+.fbtn{margin-top:10px;background:var(--bub);border-radius:12px;padding:10px 20px;font-weight:600;font-size:15px}
+.fbtn.on{background:var(--bg2);color:var(--tx2)}
+.date{align-self:center;font-size:12px;color:var(--tx2);margin:18px 0 4px;letter-spacing:.02em}
+.sys{align-self:center;text-align:center;font-size:14px;color:var(--tx2);line-height:19px;margin:12px 20px}
+.sys a{color:var(--link);font-weight:500;cursor:pointer}
+.msgs{display:flex;flex-direction:column;gap:6px;padding:4px 14px 8px}
+.inr{display:flex;align-items:flex-end;gap:8px}
+.inr .sp{width:28px;flex:none}
+.inr .stk{display:flex;flex-direction:column;align-items:flex-start}
+.nt{font-size:11px;color:var(--tx2);margin:3px 0 0 6px;display:flex;gap:4px;align-items:center}
+.b{max-width:292px;padding:14px 16px;border-radius:24px;font-size:16px;line-height:20px;background:var(--bub);white-space:pre-wrap}
+.b.hl{box-shadow:0 0 0 2px var(--amber)}
+.b.noise{padding:10px 14px}
+.b .lnk{display:block;margin-top:10px;color:var(--link);text-decoration:underline;font-size:15px}
+.bt{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.bt button{height:48px;border-radius:12px;background:var(--bubin);text-align:center;font-weight:600;font-size:16px;display:grid;place-items:center;width:100%}
+.bt button.off{opacity:.55;cursor:default}
+.out{align-self:flex-end;background:var(--sent);color:#fff;border-radius:24px;padding:12px 18px;font-size:16px;line-height:20px;max-width:292px}
+.typing{display:flex;gap:4px;padding:16px 18px}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--tx2);animation:bl 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bl{0%,60%,100%{opacity:.3}30%{opacity:1}}
+.inputbar{position:absolute;left:12px;right:12px;bottom:26px;height:56px;border-radius:28px;background:var(--bub);display:flex;align-items:center;gap:12px;padding:0 14px 0 6px;color:var(--tx2);font-size:16px;z-index:5}
+.inputbar .cam{width:44px;height:44px;border-radius:50%;background:#4A5CF5;display:grid;place-items:center;flex:none}
+.inputbar .ph{flex:1}
+/* DM to Link */
+.wait{margin:0 16px 4px;width:calc(100% - 32px);height:44px;border-radius:12px;background:var(--bg2);display:flex;align-items:center;gap:8px;padding:0 12px;font-weight:600;font-size:15px}
+.wait .c{margin-left:auto;font-weight:400;color:var(--tx2)}
+.lk{margin:8px 16px 0;border:1px solid var(--bd);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.lk .h{display:flex;gap:12px}
+.lk .a{font-weight:600;font-size:15px}
+.lk .d{font-size:13px;color:var(--tx2);line-height:17px;margin-top:4px}
+.btn{height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:0 16px;font-weight:600;font-size:14px;width:100%}
+.btn.p{background:var(--inv);color:var(--invt)}
+.btn.s{background:var(--bg2)}
+.btn.o{border:1px solid var(--bd)}
+.sh{display:flex;justify-content:space-between;align-items:center;padding:20px 16px 10px}
+.sh b{font-size:17px;font-weight:700;display:flex;gap:6px;align-items:center}
+.sh button{color:var(--blue);font-weight:600;font-size:14px}
+.hs{display:flex;gap:12px;overflow-x:auto;padding:0 16px 4px;scrollbar-width:none;align-items:flex-start;--rh:200px;--ph:144px}
+.hs::-webkit-scrollbar{display:none}
+.hs .card{width:144px;flex:none}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px;padding:0 16px;align-items:start;--rh:232px;--ph:179px}
+.card{display:flex;flex-direction:column;gap:6px;min-width:0;cursor:pointer}
+.th{position:relative;border-radius:14px;padding:10px;display:flex;align-items:flex-end;color:#fff;font-weight:700;font-size:15px;line-height:19px;overflow:hidden}
+.th.reel{height:var(--rh)} .th.post{height:var(--ph)}
+.th .pl{position:absolute;top:8px;left:8px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.4);display:grid;place-items:center}
+.th .hr{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.th .nl{position:absolute;top:38px;left:8px;background:#fff;color:#262626;font-size:11px;font-weight:500;padding:3px 8px;border-radius:99px}
+.card .n{font-weight:600;font-size:13px;line-height:17px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .m{font-size:11px;color:var(--tx2)}
+.res{display:flex;gap:12px;align-items:center;padding:8px 16px;width:100%}
+.res .tb{width:48px;height:64px;border-radius:8px;flex:none}
+.res .n{font-weight:600;font-size:15px}
+.res .m{font-size:13px;color:var(--tx2)}
+.rr{display:flex;align-items:center;gap:12px;padding:12px 16px;width:100%}
+.rr .x{margin-left:auto;padding:4px}
+.rh{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;font-weight:700;font-size:16px}
+.rh button{color:var(--blue);font-weight:600;font-size:14px}
+.pillrow{display:flex;gap:8px;padding:4px 16px 14px}
+.pillrow button{background:var(--bg2);border-radius:99px;padding:7px 14px;font-size:13px;font-weight:600}
+.pillrow button.on{background:var(--inv);color:var(--invt)}
+.tuck{margin:22px 16px 0;width:calc(100% - 32px);display:flex;align-items:center;gap:10px;border:1px dashed var(--bd);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--tx2)}
+.tuck b{color:var(--tx)}
+.custom{margin:12px 16px 0;width:calc(100% - 32px);text-align:center;background:var(--bg2);border-radius:12px;padding:12px;font-weight:600;font-size:14px}
+.empty{padding:40px 16px;text-align:center;color:var(--tx2);font-size:14px}
+/* overlays */
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:30}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--sheet);border-radius:24px 24px 0 0;padding:10px 20px 34px;z-index:31;display:flex;flex-direction:column;gap:12px;max-height:92%;overflow-y:auto;scrollbar-width:none}
+.sheet .hd{width:36px;height:4px;border-radius:2px;background:var(--bd);align-self:center;flex:none}
+.sheet .big{position:relative;height:190px;border-radius:16px;padding:16px;display:flex;align-items:flex-end;color:#fff;font-weight:700;font-size:22px;line-height:28px;flex:none}
+.sheet .big .pl{position:absolute;top:12px;left:12px;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.4);display:grid;place-items:center}
+.sheet .tt{font-weight:700;font-size:17px}
+.sheet .fr{font-size:13px;color:var(--tx2);margin-top:4px}
+.sheet .sm{font-size:15px;line-height:20px}
+.sheet .src{font-size:11px;color:var(--tx2)}
+.sheet .ln{font-size:13px;font-weight:600}
+.sheet .ln.dim{color:var(--tx2)}
+.sheet .nz{font-size:12px;color:var(--tx2);background:var(--bg2);border-radius:10px;padding:8px 10px;display:flex;gap:8px;align-items:center}
+.sheet .act{display:flex;gap:12px}
+.quote{background:var(--bg2);border-radius:12px;padding:12px;font-size:14px;line-height:19px}
+.sheet .ttl2{font-weight:700;font-size:17px;text-align:center}
+.sheet .cp{font-size:13px;color:var(--tx2);text-align:center;line-height:18px}
+.tg{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tg button{border:1px solid var(--bd);border-radius:99px;padding:8px 14px;font-size:14px;font-weight:600;display:flex;gap:6px;align-items:center}
+.tg button.on{background:var(--inv);color:var(--invt);border-color:var(--inv)}
+.nzrow{display:flex;justify-content:space-between;font-size:14px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.nzrow span:last-child{color:var(--tx2)}
+.cm{height:640px;padding:10px 0 0}
+.cm .ttl{text-align:center;font-weight:700;font-size:16px;padding:6px 0 10px;border-bottom:1px solid var(--bd)}
+.cm .list{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:14px;scrollbar-width:none}
+.cmt{display:flex;gap:12px}
+.cmt.rep{margin-left:48px;gap:10px}
+.cmt .u{font-size:13px;color:var(--tx2)}
+.cmt .u b{color:var(--tx);font-weight:600;margin-right:6px}
+.cmt .au{font-size:11px;background:var(--bg2);border-radius:99px;padding:1px 7px;margin-left:2px;color:var(--tx2)}
+.cmt .t{font-size:14px;line-height:18px;margin-top:2px}
+.cmt .lk2{margin-left:auto;color:var(--tx2)}
+.cm .emo{display:flex;gap:14px;font-size:22px;padding:8px 16px;align-items:center}
+.cm .emo .g{font-size:13px;font-weight:700;background:var(--bg2);border-radius:99px;padding:6px 12px;color:var(--tx)}
+.cm .inp{display:flex;align-items:center;gap:10px;padding:8px 16px 0;border-top:1px solid var(--bd)}
+.cm .inp input{flex:1;height:44px;border-radius:22px;border:1px solid var(--bd);background:none;outline:none;padding:0 16px;font:inherit;font-size:14px;color:var(--tx)}
+.cm .inp input::placeholder{color:var(--tx2)}
+.cm .inp .post{color:var(--blue);font-weight:700;font-size:14px}
+.cm .inp .post.off{opacity:.4}
+.notif{position:absolute;left:12px;right:12px;top:58px;background:var(--bub);border-radius:22px;padding:12px 14px;display:flex;align-items:center;gap:12px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.35);animation:dn .3s;cursor:pointer}
+.notif .m{flex:1;font-size:14px;line-height:18px}
+.notif .m b{font-weight:700}
+.notif .n{font-size:12px;color:var(--tx2)}
+@keyframes dn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+.th.grp{background:var(--bg2);align-items:flex-end;padding:10px}
+.stk2{position:absolute;left:50%;top:26px;width:110px;height:130px;transform:translateX(-50%)}
+.stk2 i{position:absolute;width:76px;height:104px;border-radius:10px;border:2px solid var(--bg2)}
+.cnt{position:relative;width:100%;background:var(--badge);color:#000;border-radius:99px;padding:4px 8px;font-size:12px;font-weight:700;text-align:center}
+.hc{gap:14px}
+.ct{display:flex;flex-direction:column;align-items:center;gap:6px;width:84px;flex:none}
+.cn1{font-size:13px;font-weight:600;text-align:center;line-height:16px;max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cn2{font-size:11px;color:var(--tx2)}
+.cbox{display:flex;gap:14px;align-items:center;padding:8px 16px}
+.cbox b{font-size:18px;display:block}
+.cbox span{font-size:13px;color:var(--tx2);display:block;margin-top:2px;line-height:17px}
+.tg2{display:flex;gap:8px;padding:6px 16px 4px;flex-wrap:wrap}
+.chip{background:var(--bg2);border-radius:99px;padding:6px 12px;font-size:13px}
+.act2{display:flex;gap:10px;padding:10px 16px}
+.lr{display:flex;gap:8px;flex-wrap:wrap}
+.lr button{background:var(--bg2);border-radius:99px;padding:7px 12px;font-size:13px;font-weight:600;display:flex;gap:6px;align-items:center}
+.sheet.l{z-index:41}
+.scrim.l{z-index:40}
+.lin{width:100%;height:46px;border-radius:12px;border:1px solid var(--bd);background:none;outline:none;padding:0 14px;font:inherit;font-size:15px;color:var(--tx)}
+body.shot{display:block;margin:0;background:transparent}
+body.shot .panel,body.shot .stage{display:none}
+body.board{display:block;background:#EDEDF0}
+body.board .panel,body.board .stage{display:none}
+.boardwrap{display:grid;grid-template-columns:repeat(6,402px);gap:56px 48px;padding:56px;width:max-content}
+.bl{font-size:16px;font-weight:700;color:#262626;margin-bottom:12px}
+.toast{position:absolute;left:50%;bottom:176px;transform:translateX(-50%);background:var(--inv);color:var(--invt);font-size:13px;font-weight:600;padding:12px 16px;border-radius:12px;z-index:70;box-shadow:0 4px 12px rgba(0,0,0,.3);white-space:nowrap;animation:pop .2s}
+@keyframes pop{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+html{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.strip,.mbar{display:none}
+.pclose{display:none}
+/* phones and narrow windows: the phone fills the page, the side panel becomes a menu. Desktop layout above is unchanged. */
+@media (max-width:820px){
+  body{display:block}
+  .strip{display:block;position:fixed;top:0;left:0;right:0;height:28px;line-height:28px;text-align:center;font-size:11px;color:#5B5B70;background:#EDEDF0;z-index:90;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 8px}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;gap:8px;padding:6px 10px calc(6px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #DBDBDB;z-index:90}
+  .mbar button{flex:1;height:40px;border-radius:12px;font-weight:600;font-size:14px;text-align:center;background:#EFEFEF;color:#262626;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 10px}
+  .mbar .nx{background:#6A40F0;color:#fff;flex:2}
+  .stage{display:flex;padding:28px 0 56px;align-items:flex-start;justify-content:center}
+  .phone{padding:0;border-radius:0;background:none;box-shadow:none;width:402px;height:874px}
+  .screen{border-radius:0}
+  .screen input{font-size:16px}
+  .panel{display:none;position:fixed;inset:0;width:auto;height:auto;z-index:200;border-right:0;padding:16px 20px 40px}
+  body.menu-open .panel{display:block}
+  .pclose{display:block;margin:0 0 10px auto;background:#EFEFEF;border-radius:10px;padding:8px 14px;font-weight:600;font-size:13px}
+}
+</style>
+</head>
+<body>
+<aside class="panel" id="panel"></aside>
+<main class="stage"><div class="scaler" id="scaler"><div class="phone"><div class="screen" id="screen" data-t="dark"></div></div></div></main>
+<div class="strip">Educational concept. Not Instagram or Meta. Handles are invented.</div>
+<div class="mbar" id="mbar"><button data-mm="menu">Menu</button><button class="nx" data-mm="next">Start</button></div>
+
+<script>
+/* ---------- icons ---------- */
+const P={
+ home:'<path d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
+ reels:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3l3 6M15 3l3 6"/><path d="M10 13.5v4l3.5-2z"/>',
+ send:'<path d="M22 3 11 14M22 3l-7 19-4-8-8-4z"/>',
+ search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+ profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+ back:'<path d="M19 12H5M11 5l-7 7 7 7"/>',
+ compose:'<path d="M12 4H5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4z"/>',
+ heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>',
+ play:'<path d="M7 4l13 8-13 8z" fill="currentColor"/>',
+ lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+ camera:'<path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="4"/>',
+ video:'<rect x="2" y="6" width="14" height="12" rx="3"/><path d="M16 10l6-3v10l-6-3"/>',
+ phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+ plusc:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ mic:'<rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+ image:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.5"/><path d="M21 16l-5-5-8 8"/>',
+ sticker:'<path d="M20 12a8 8 0 1 1-8-8h4a4 4 0 0 1 4 4z"/><path d="M9 10v.01M15 10v.01M9 14c1 1.3 2.2 2 3 2"/>',
+ comment:'<path d="M21 12a8.5 8.5 0 0 1-12.2 7.6L3 21l1.5-5.4A8.5 8.5 0 1 1 21 12z"/>',
+ bookmark:'<path d="M6 3h12v18l-6-4.5L6 21z"/>',
+ pin:'<path d="M12 17v5M8.5 3h7l-1 6.5 3.5 3.5H6l3.5-3.5z"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ more:'<circle cx="5" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="19" cy="12" r="1.4" fill="currentColor"/>',
+ down:'<path d="M6 9l6 6 6-6"/>',
+ right:'<path d="M9 5l7 7-7 7"/>',
+ close:'<path d="M6 6l12 12M18 6L6 18"/>',
+ check:'<path d="M5 12l5 5 9-10"/>'
+};
+const ic=(n,s=24,c='currentColor',fill=false)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="${fill?c:'none'}" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none">${P[n]}</svg>`;
+
+/* ---------- seed data (all handles and people are invented) ---------- */
+const R=(id,title,thumb,by,date,ago,color,type,tags,src,link,sum,o={})=>Object.assign({id,title,thumb,by,date,ago,color,type,tags,src,link,sum,pinned:false,noise:{sent:1,promo:2}},o);
+const SEED={
+ friends:[
+  {id:'emily',name:'Emily',pv:'are we still on for saturday??',t:'8h',c:'coral'},
+  {id:'jake',name:'Jake',pv:'lol did you see this',t:'9h',c:'indigo'},
+  {id:'megan',name:'Megan',pv:'call me when you can',t:'1d',c:'purple'},
+  {id:'chris',name:'Chris',pv:'You: haha yes',t:'2d',c:'green'},
+  {id:'priya',name:'Priya',pv:'sent you a reel',t:'3d',c:'teal'}],
+ creators:[
+  {id:'fitwithtara',name:'fitwithtara',pv:'Last call on 30% off',t:'2h',c:'coral',unread:1},
+  {id:'15minkitchen',name:'15minkitchen',pv:'Sent ✨',t:'3h',c:'orange',unread:1},
+  {id:'pmwithjay',name:'pmwithjay',pv:'Here you go 🎉',t:'4h',c:'indigo',unread:1},
+  {id:'resumewithrachel',name:'resumewithrachel',pv:'Check your DMs 📩',t:'5h',c:'teal'},
+  {id:'notionwithmo',name:'notionwithmo',pv:'Follow me to get the template',t:'5h',c:'green'},
+  {id:'slowmornings',name:'slowmornings',pv:"It's in my bio!",t:'6h',c:'brown'},
+  {id:'aiwithnoor',name:'aiwithnoor',pv:'Sent ✨',t:'6h',c:'navy',unread:1},
+  {id:'glowbymira',name:'glowbymira',pv:'Reminder: your guide expires in 24h ⏰',t:'7h',c:'purple'},
+  {id:'bookshelfbea',name:'bookshelfbea',pv:'Your reading list is ready',t:'7h',c:'purple'},
+  {id:'breadbyben',name:'breadbyben',pv:'Sent ✨',t:'8h',c:'green'},
+  {id:'styleby_sam',name:'styleby_sam',pv:'Capsule drop this Friday',t:'8h',c:'brown'}],
+ res:[
+  R('r6','4-week glute plan','4-week glute plan','@fitwithtara','Oct 3',0,'coral','reel',['Fitness'],'button','tara.fit/glute-plan','Three workouts a week, no equipment needed. The reel promised a free PDF guide with a day-by-day schedule.',{noise:{sent:1,promo:3}}),
+  R('r13','Soft glam in 5 minutes','soft glam in 5','@glowbymira','Oct 1',2,'purple','reel',['Makeup'],'button','glowbymira.com/softglam','A five-minute everyday makeup routine with a product list.'),
+  R('r1','PRD template','the PRD I use','@pmwithjay','Sep 30',3,'indigo','reel',['Careers','AI'],'button','pmwithjay.com/prd','A one-page PRD template. The reel walked through a real launch doc and promised the Notion copy.',{pinned:true}),
+  R('r15','Notion AI workflows','Notion AI workflows','@aiwithnoor','Sep 30',3,'navy','reel',['AI'],'button','aiwithnoor.com/notion-ai','Six Notion AI workflows for notes, tasks and meeting summaries.'),
+  R('r3','50 prompts for PMs','50 prompts for PMs','@promptsforpms','Sep 28',5,'purple','post',['AI','Careers'],'button','promptsforpms.com/50','Fifty AI prompts for roadmaps, PRDs and stakeholder updates.'),
+  R('r14','Dewy skin routine','dewy skin, 4 steps','@skinwithsana','Sep 27',6,'coral','post',['Makeup'],'button','skinwithsana.com/dewy','A four-step skincare routine with budget swaps.'),
+  R('r4','Fall capsule, 20 pieces','fall capsule, 20 pieces','@styleby_sam','Sep 26',7,'brown','reel',['Lifestyle'],'button','stylebysam.com/capsule','A 20-piece fall wardrobe list with outfit combinations.'),
+  R('r17','One-pan chicken dinners','one-pan chicken x5','@15minkitchen','Sep 25',8,'orange','post',['Cooking'],'button','15min.kitchen/one-pan','Five one-pan chicken dinners with a shopping list.'),
+  R('r2','Resume template for PMs','PM resume that works','@resumewithrachel','Sep 21',12,'teal','post',['Careers'],'button','rachel.co/pm-resume','A resume template built for product managers, with the bullet formula from the reel.',{pinned:true}),
+  R('r16','ChatGPT prompts for freelancers','prompts for freelancers','@aiwithnoor','Sep 22',11,'indigo','post',['AI','Careers'],'button','aiwithnoor.com/freelance','Prompt pack for proposals, invoices and client emails.'),
+  R('r7','Sourdough starter guide','sourdough from scratch','@breadbyben','Sep 18',15,'green','reel',['Cooking'],'text','breadbyben.co/starter','A seven-day starter schedule. The creator pasted the link as plain text in the message.'),
+  R('r5','15-minute garlic pasta','garlic pasta in 15','@15minkitchen','Sep 12',21,'orange','reel',['Cooking'],'button','15min.kitchen/garlic-pasta','A garlic pasta recipe that takes 15 minutes. The reel was about a quick weeknight dinner.'),
+  R('r18','Home workout split','home workout split','@fitwithtara','Sep 11',22,'coral','post',['Fitness'],'button','tara.fit/split','A three-day home workout split.'),
+  R('r8','Budget tracker sheet','budget tracker','@moneywithmei','Sep 9',24,'navy','post',['Finance'],'short','bit.ly/3Kd9x','A monthly budget spreadsheet. The link was shortened, so the card shows where it goes.',{expands:'moneywithmei.com/tracker'}),
+  R('r9','Morning routine checklist','my morning routine','@slowmornings','Sep 5',28,'teal','reel',['Lifestyle'],'none','','A checklist for slow mornings. The creator said the link is in their bio.',{noise:{sent:0,promo:1}}),
+  R('r10','Summer reading list','summer reading list','@bookshelfbea','Aug 2',62,'purple','post',['Lifestyle'],'button','bookshelfbea.com/summer','Twelve books for summer, grouped by mood.')],
+ gated:[
+  {id:'g1',by:'@notionwithmo',state:'locked',detail:'The creator needs a follow before sending the Notion CRM template.',
+   res:R('r11','Notion CRM template','Notion CRM in 10 min','@notionwithmo','Oct 2',1,'green','reel',['Careers','AI'],'button','notion.so/crm-template','A simple CRM for freelancers, built in Notion.')},
+  {id:'g2',by:'@bakerlab',state:'locked',detail:'The creator needs a follow before sending the weekly bread plan.',
+   res:R('r12','Weekly bread plan','bake bread weekly','@bakerlab','Oct 1',2,'brown','post',['Cooking'],'text','bakerlab.co/plan','A weekly baking plan. The link arrived in the message text.')}]
+};
+/* deliverable cases: link in a button (default), resource typed in the message, two links in one message, typed gate with no button */
+SEED.res.find(r=>r.id==='r3').more=[{l:'Community link',u:'promptsforpms.com/community'}];
+SEED.res.push(R('r19','Lemon pasta recipe','lemon pasta, typed out','@15minkitchen','Oct 2',1,'orange','post',['Cooking'],'msg','','A lemon pasta recipe the creator typed into the DM instead of linking out.',{msgText:'Lemon pasta (serves 2): 200g spaghetti, 2 lemons, 3 tbsp butter, parmesan. Boil 9 min, toss with zest, juice and butter, finish with parmesan.',noise:{sent:1,promo:1}}));
+SEED.pending=[{id:'n1',by:'@mealprepmaya',detail:"Asked you to reply with your email to get the link. With no button to tap, we can't tell if a link will follow."}];
+const DET=r=>r.src==='button'?'Detected from a URL button in the automated reply.':r.src==='text'?'Detected from a URL in the message text.':r.src==='short'?'Detected from a shortened URL, expanded so you can see where it goes.':r.src==='msg'?'The resource is the message text itself. There is no link to open.':'No link or attachment found after the automation sequence ended. The card says so instead of guessing.';
+const TOPICS=[{n:'Cooking',on:1},{n:'AI',on:1},{n:'Fitness',on:1},{n:'Lifestyle',on:1},{n:'Makeup',on:1},{n:'Careers',on:1},{n:'Finance',on:0}];
+const COMMENTS=[
+ {u:'jake',c:'indigo',t:'GUIDE',time:'2h',rep:'Sent ✨'},
+ {u:'megan',c:'purple',t:'GUIDE please!! 🙏',time:'2h',rep:'Sent ✨'},
+ {u:'sara.m',c:'orange',t:'Link??',time:'2h',rep:'Check your DMs 📩'},
+ {u:'dev_ops',c:'navy',t:'interested!!',time:'1h',rep:'Sent ✨'},
+ {u:'noah',c:'green',t:'got it, thanks ✨',time:'1h'},
+ {u:'priya_k',c:'teal',t:'this routine is so good 🔥',time:'1h'}];
+const POSTS=[
+ {id:'p1',by:'fitwithtara',c:'coral',sub:'Original audio',kind:'guide',likes:'2,184',com:'312',shr:'96',cap:"Glutes in 4 weeks, no equipment. Comment GUIDE and I'll DM you the full plan 💪",time:'2 hours ago',creator:true},
+ {id:'p2',by:'emily',c:'coral',sub:'Lake Tahoe',kind:'sunset',likes:'48',com:'6',shr:'2',cap:'golden hour at the lake',time:'5 hours ago'},
+ {id:'p3',by:'15minkitchen',c:'orange',sub:'Suggested for you',kind:'food',likes:'9,031',com:'1,204',shr:'410',cap:'Garlic pasta in 15 minutes. Comment PASTA for the recipe 🍝',time:'1 day ago',creator:true}];
+
+/* ---------- state ---------- */
+let THEME='dark',S,tm=null,ct=null;
+const clone=o=>JSON.parse(JSON.stringify(o));
+function reset(o={}){ S=Object.assign({mode:'before',stack:['feed'],comments:false,commented:false,replied:false,notif:null,sheet:null,waiting:false,pendingOpen:false,alias:{},label:null,labelDraft:'',query:'',searchMode:false,recents:['that pasta thing','resume'],topics:clone(TOPICS),topicsSheet:false,tuckSheet:false,filter:'all',toast:null,hl:false,flash:null,following:false,msgs:[],busy:false,draft:'',step:null,postedText:'',data:clone(SEED)},o); }
+reset();
+const cur=()=>S.stack[S.stack.length-1];
+const col=c=>`var(--media-${c})`;
+const initial=n=>n.replace(/[^A-Za-z]/g,'').charAt(0).toUpperCase();
+const av=(n,c,size=48,ring=false)=>{ const a=`<div class="av" style="width:${size}px;height:${size}px;font-size:${Math.round(size/3)}px;background:${col(c)}">${initial(n)}</div>`; return ring?`<div class="ring">${a}</div>`:a; };
+const findRes=id=>S.data.res.find(r=>r.id===id)||S.data.gated.map(g=>g.res).find(x=>x.id===id);
+function toast(m){ S.toast=m; clearTimeout(tm); tm=setTimeout(()=>{S.toast=null;render()},2400); }
+
+/* ---------- DM thread script: real comment-to-DM automation, noise included ---------- */
+const T0=()=>[{k:'date',t:'OCT 3, 5:52 PM'},{k:'sys'},{k:'in',t:"Hey! Thanks so much for stopping by 😊\n\nTap below and I'll send you access shortly ✨",b:[{l:'Send me the access',a:'access'}]}];
+const T1=()=>T0().concat([{k:'out',t:'Send me the access'},{k:'in',t:"Hey! It seems you're not following me yet. Would love it if you could check out my profile and hit follow 😊",b:[{l:'Visit Profile',a:'visit'},{l:"I'm following ✅",a:'following'}]}]);
+const T2=()=>T1().concat([{k:'out',t:"I'm following ✅"},{k:'in',t:"You're in! 🎉 Here's your 4-week glute plan.",b:[{l:'Get the plan',a:'open'}],link:'tara.fit/glute-plan',hl:true},{k:'in',t:'Sent ✨',noise:true}]);
+const T3=()=>T2().concat([{k:'date',t:'2 DAYS LATER'},{k:'in',t:'Did you check it out? Reply YES for the next part',noise:true},{k:'in',t:'Reminder: your guide link expires soon ⏰',noise:true},{k:'date',t:'1 WEEK LATER'},{k:'in',t:'My full program is 30% off this week',noise:true},{k:'date',t:'2 WEEKS LATER'},{k:'in',t:'Last call on 30% off',noise:true}]);
+function reply(m,ms=1000){ S.msgs.push({k:'typing'}); render(); setTimeout(()=>{ S.msgs=S.msgs.filter(x=>x.k!=='typing'); S.msgs.push(m); S.busy=false; render(); },ms); }
+const deliver=()=>T2().slice(-2)[0];
+function threadAction(a){
+  if(S.busy) return;
+  if(a==='access'){ S.busy=true; S.msgs.push({k:'out',t:'Send me the access'}); if(S.following){ reply(deliver()); setTimeout(()=>{ S.msgs.push({k:'in',t:'Sent ✨',noise:true}); render(); },2400); } else reply(T1().slice(-1)[0]); }
+  else if(a==='visit'){ toast('Opening @fitwithtara. Tap Follow, then come back'); }
+  else if(a==='following'){ S.busy=true; S.msgs.push({k:'out',t:"I'm following ✅"});
+    if(S.following){ reply(deliver()); setTimeout(()=>{ S.msgs.push({k:'in',t:'Sent ✨',noise:true}); render(); },2400); }
+    else reply({k:'in',t:"Hmm, I can't see you following yet. Tap Follow at the top, then try again 🙏",b:[{l:'Visit Profile',a:'visit'},{l:"I'm following ✅",a:'following'}]}); }
+  else if(a==='open'){ toast('Opening tara.fit/glute-plan'); }
+}
+
+/* ---------- helpers for DM to Link ---------- */
+const itemsFor=name=>{ const r=S.data.res; let a;
+  if(name==='Pinned') a=r.filter(x=>x.pinned); else if(name==='Recent') a=r.filter(x=>x.ago<=14); else a=r.filter(x=>x.tags.includes(name));
+  return a.slice().sort((x,y)=>(name==='Pinned'?0:x.ago-y.ago)); };
+const STOP=['that','thing','the','a','an','of','i','for','my'];
+const matches=(r,q)=>{ const blob=(r.title+' '+r.sum+' '+r.thumb+' '+r.by+' '+r.tags.join(' ')+' '+(r.alias||'')+' '+(S.alias[r.by]||'')).toLowerCase(); const toks=q.toLowerCase().split(/\s+/).filter(t=>t&&!STOP.includes(t)); return toks.length&&toks.every(t=>blob.includes(t)); };
+const noiseTotal=()=>31;
+
+/* ---------- labels, creators, grouped Recent ---------- */
+const dn=by=>S.alias[by]||by;
+const rt=r=>r.alias||r.title;
+const agoTxt=n=>n===0?'today':n===1?'yesterday':n<14?`${n} days ago`:`${Math.round(n/7)} weeks ago`;
+function creatorsList(){ const m={}; S.data.res.forEach(r=>{ (m[r.by]=m[r.by]||{by:r.by,items:[],c:r.color}).items.push(r); });
+  return Object.values(m).map(g=>{ g.items.sort((a,b)=>a.ago-b.ago); g.last=g.items[0].ago; g.tags=[...new Set(g.items.flatMap(r=>r.tags))]; return g; }).sort((a,b)=>a.last-b.last); }
+const cmatch=(g,q)=>{ const blob=(dn(g.by)+' '+g.by+' '+g.tags.join(' ')).toLowerCase(); const toks=q.toLowerCase().split(/\s+/).filter(t=>t&&!STOP.includes(t)); return toks.length&&toks.every(t=>blob.includes(t)); };
+const sugg=(kind,id)=>{ if(kind==='res'){ const r=findRes(id); const w=r.title.toLowerCase().split(' ').slice(0,2).join(' '); return [...new Set([w,r.tags[0].toLowerCase()+' '+r.type,r.by.slice(1)+' '+r.type])].slice(0,3); }
+  const g=creatorsList().find(x=>x.by===id); const t=g?g.tags:[]; return [...new Set([t[0]?t[0]+' creator':'',t.slice(0,2).join(' + '),id.slice(1)].filter(Boolean))].slice(0,3); };
+const creatorRow=g=>`<button class="res" data-a="creator" data-v="${g.by}">${av(g.by,g.c,52,true)}<div style="flex:1;min-width:0"><div class="n">${dn(g.by)}</div><div class="m">${S.alias[g.by]?g.by+' · ':''}${g.items.length} resource${g.items.length>1?'s':''} · ${g.tags.slice(0,2).join(', ')}</div></div>${ic('right',16,'var(--tx2)')}</button>`;
+function creatorsSection(){ const l=creatorsList(); if(!l.length) return '';
+  return `<div class="sh"><b>${ic('profile',16,'var(--tx)')}Creators you engaged with</b><button data-a="seeall" data-v="Creators">See all</button></div><div class="hs hc">${l.slice(0,8).map(g=>`<button class="ct" data-a="creator" data-v="${g.by}">${av(g.by,g.c,64,true)}<div class="cn1">${dn(g.by)}</div><div class="cn2">${g.items.length} resource${g.items.length>1?'s':''}</div></button>`).join('')}</div>`; }
+function groupCard(by){ const g=creatorsList().find(x=>x.by===by); const cols=g.items.slice(0,3).map(r=>r.color);
+  return `<div class="card" data-a="creator" data-v="${by}"><div class="th reel grp"><div class="stk2">${cols.map((c,i)=>`<i style="background:${col(c)};left:${i*14}px;top:${i*8}px;transform:rotate(${(i-1)*5}deg)"></i>`).join('')}</div><span class="cnt">${g.items.length} resources</span></div><div class="n">${dn(by)}</div><div class="m">In one chat · latest ${agoTxt(g.last)}</div></div>`; }
+function groupedRecent(a){ const cnt={}; a.forEach(r=>{cnt[r.by]=(cnt[r.by]||0)+1;}); const done=new Set(); const out=[];
+  a.forEach(r=>{ if(cnt[r.by]>=2){ if(done.has(r.by)) return; done.add(r.by); out.push(groupCard(r.by)); } else out.push(card(r)); }); return out; }
+function creatorsAll(){ const l=creatorsList();
+  return `<div class="col">${status()}<div class="hdr"><button data-a="back">${ic('back')}</button><div class="t">Creators you engaged with</div><div class="sp"></div></div><div class="body" id="body">${l.map(creatorRow).join('')}</div></div>${tabbar('inbox')}`; }
+function creatorScreen(by){ const items=S.data.res.filter(r=>r.by===by).sort((a,b)=>a.ago-b.ago); const c=items[0]?items[0].color:'coral'; const tags=[...new Set(items.flatMap(r=>r.tags))]; const al=S.alias[by];
+  return `<div class="col">${status()}<div class="hdr"><button data-a="back">${ic('back')}</button><div class="t">${dn(by)}</div><div class="sp"></div></div>
+  <div class="body" id="body"><div class="cbox">${av(by,c,76,true)}<div style="min-width:0">${al?`<b>${al}</b><span>${by}</span>`:`<b>${by}</b><span>No label yet. Add one so you remember what they share.</span>`}</div></div>
+  <div class="tg2">${tags.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+  <div class="act2"><button class="btn p" data-a="chat" data-v="${by.slice(1)}">Open chat</button><button class="btn s" data-a="label" data-v="cr:${by}">${al?'Edit label':'Add label'}</button></div>
+  <div class="rh">Resources in this chat<span style="color:var(--tx2);font-weight:400;font-size:14px">${items.length}</span></div>
+  ${items.map(r=>`<button class="res" data-a="card" data-v="${r.id}"><div class="tb" style="background:${col(r.color)}"></div><div style="flex:1;min-width:0"><div class="n">${rt(r)}</div><div class="m">${r.type==='reel'?'Reel':'Post'} · ${r.date}</div><div class="m">From your comment on “${r.thumb}”</div></div>${r.pinned?ic('pin',16,'var(--tx2)'):''}</button>`).join('')}</div></div>${tabbar('inbox')}`; }
+const labelSheet=()=>{ const L=S.label,isRes=L.kind==='res',r=isRes?findRes(L.id):null,has=isRes?r.alias:S.alias[L.id];
+  return `<div class="scrim l" data-a="lclose"></div><div class="sheet l"><div class="hd"></div><div class="ttl2">${isRes?'Label this resource':'Label this creator'}</div><div class="cp">${isRes?'Original: '+r.title:L.id}<br>Only you see this. It shows in DM to Link and in search.</div><input class="lin" id="lin" placeholder="${isRes?'e.g. glute plan':'e.g. Tara, gym'}" value="${S.labelDraft.replace(/"/g,'&quot;')}"><div class="tg">${sugg(L.kind,L.id).map(s=>`<button data-a="lfill" data-v="${s}">${s}</button>`).join('')}</div><div class="act"><button class="btn p" data-a="lsave">Save label</button>${has?'<button class="btn s" data-a="lremove">Remove</button>':''}</div></div>`; };
+
+/* ---------- screens ---------- */
+const status=()=>`<div class="status"><span>9:41</span><span class="r">5G<span class="bat"><i></i></span></span></div>`;
+function tabbar(active){ const t=[['home','home'],['reels','reels'],['send','inbox'],['search','search'],['profile','profile']];
+  return `<div class="tabbar">${t.map(([n,k])=>`<button data-a="tab" data-v="${k}" class="${k===active?'on':''}">${ic(n,24,'var(--tx)')}${k==='inbox'&&S.commented&&active!=='inbox'?'<span class="bd">1</span>':''}</button>`).join('')}</div>`; }
+
+function art(kind){
+  if(kind==='guide') return `<div class="media" style="background:linear-gradient(160deg,#F4515F,#C2185B 60%,#7C4DEB)"><div class="big"><b>Comment<br>GUIDE</b><span>for my free 4-week glute plan</span></div><div class="rl">${ic('reels',14,'#fff')}Reel</div></div>`;
+  if(kind==='sunset') return `<div class="media" style="background:linear-gradient(180deg,#FFC27A,#F4515F 55%,#3B4FD8)"><div style="position:absolute;left:50%;top:44%;width:120px;height:120px;border-radius:50%;background:#FFE9A8;transform:translateX(-50%)"></div><div style="position:absolute;left:-20%;bottom:-18%;width:90%;height:50%;border-radius:50%;background:#1B2A6B"></div><div style="position:absolute;right:-25%;bottom:-24%;width:100%;height:46%;border-radius:50%;background:#12194A"></div></div>`;
+  return `<div class="media" style="background:linear-gradient(135deg,#F28C28,#F6D365)"><div style="position:absolute;left:50%;top:50%;width:300px;height:300px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 0 14px rgba(255,255,255,.35)"></div><div class="big" style="color:#A0522D"><b style="font-size:48px;line-height:50px">garlic<br>pasta<br>in 15</b></div></div>`;
+}
+function feed(){
+  const cc=S.commented?(S.replied?'314':'313'):'312';
+  const posts=POSTS.map(p=>`<div class="post"><div class="ph">${av(p.by,p.c,34,p.creator)}<div style="flex:1"><div class="nm">${p.by}</div><div class="sb">${p.sub}</div></div>${ic('more',20,'var(--tx)')}</div>${art(p.kind)}
+  <div class="acts"><button>${ic('heart',26,'var(--tx)')}${p.likes}</button><button data-a="${p.id==='p1'?'comments':'noop'}">${ic('comment',26,'var(--tx)')}${p.id==='p1'?cc:p.com}</button><button>${ic('send',26,'var(--tx)')}${p.shr}</button><span class="bm">${ic('bookmark',26,'var(--tx)')}</span></div>
+  <div class="cap"><b>${p.by}</b> ${p.cap}</div><div class="dim" data-a="${p.id==='p1'?'comments':'noop'}" style="cursor:pointer">View all ${p.id==='p1'?cc:p.com} comments</div><div class="dim" style="font-size:12px;padding-bottom:18px">${p.time}</div></div>`).join('');
+  const stories=[['Your story','teal',0],['emily','coral',1],['jake','indigo',1],['megan','purple',1],['fitwithtara','coral',1],['15minkitchen','orange',1]].map(([n,c,r])=>`<div class="st"><div style="position:relative">${av(n,c,64,!!r)}${!r?`<span class="plus">${ic('plus',12,'#fff')}</span>`:''}</div><span>${n.length>10?n.slice(0,9)+'…':n}</span></div>`).join('');
+  return `<div class="col">${status()}<div class="fh">${ic('plus',26,'var(--tx)')}<div class="c">For you ${ic('down',16,'var(--tx)')}</div><div style="position:relative">${ic('heart',26,'var(--tx)')}<span style="position:absolute;top:0;right:0;width:8px;height:8px;border-radius:50%;background:var(--red)"></span></div></div>
+  <div class="body nopad" id="body"><div class="stories">${stories}</div>${posts}</div></div>${tabbar('home')}`;
+}
+function commentsSheet(){
+  const mine=S.commented?`<div class="cmt">${av('you','teal',36)}<div><div class="u"><b>you</b>now</div><div class="t">${S.postedText}</div></div></div>${S.replied?`<div class="cmt rep">${av('fitwithtara','coral',26,true)}<div><div class="u"><b>fitwithtara</b><span class="au">Creator</span> now</div><div class="t">Sent ✨</div></div></div>`:''}`:'';
+  const others=COMMENTS.map(c=>`<div class="cmt">${av(c.u,c.c,36)}<div><div class="u"><b>${c.u}</b>${c.time}</div><div class="t">${c.t}</div></div><span class="lk2">${ic('heart',16,'var(--tx2)')}</span></div>${c.rep?`<div class="cmt rep">${av('fitwithtara','coral',26,true)}<div><div class="u"><b>fitwithtara</b><span class="au">Creator</span> ${c.time}</div><div class="t">${c.rep}</div></div></div>`:''}`).join('');
+  const ok=S.draft.trim().length>0;
+  return `<div class="scrim" data-a="close"></div><div class="sheet cm"><div class="hd"></div><div class="ttl">Comments</div>
+  <div class="list"><div class="cmt">${av('fitwithtara','coral',36,true)}<div><div class="u"><b>fitwithtara</b>2h</div><div class="t">Glutes in 4 weeks, no equipment. Comment GUIDE and I'll DM you the full plan 💪</div></div></div>${mine}${others}</div>
+  <div class="emo"><button class="g" data-a="fill" data-v="GUIDE">GUIDE</button>${['❤️','🙌','🔥','👏','😍','😂'].map(e=>`<span>${e}</span>`).join('')}</div>
+  <div class="inp">${av('you','teal',36)}<input id="cin" placeholder="Add a comment for fitwithtara..." value="${S.draft.replace(/"/g,'&quot;')}"><button class="post ${ok?'':'off'}" data-a="post">Post</button></div></div>`;
+}
+
+function lastIn(){ const m=[...S.msgs].reverse().find(x=>x.k==='in'); return m?m.t.replace(/\n+/g,' '):null; }
+function msgRow(f,unread,flash){ return `<button class="row ${unread?'unread':''} ${flash?'flash':''}" data-id="${f.id}" data-a="chat" data-v="${f.id}">${av(f.name,f.c,56)}<div class="tx"><div class="nm">${f.name}</div><div class="pv">${f.pv} · ${f.t}</div></div>${unread?'<span class="dot"></span>':ic('camera',22,'var(--tx2)')}</button>`; }
+function inbox(){
+  const d=S.data,before=S.mode==='before'; let list='';
+  const li=lastIn();
+  const creators=d.creators.map(c=>c.id==='fitwithtara'&&li?Object.assign({},c,{pv:li,t:'now'}):c);
+  if(before) list=creators.map(c=>msgRow(c,c.unread)).join('')+d.friends.map(f=>msgRow(f,false,S.flash===f.id)).join('');
+  else list=d.friends.map(f=>msgRow(f,false)).join('');
+  const week=d.res.filter(r=>r.ago<=7).length;
+  const floatBar=before?'':`<button class="float" data-a="go" data-v="stuff"><div class="art"><i style="left:3px;background:${col('coral')};transform:rotate(-10deg)"></i><i style="left:10px;background:${col('orange')}"></i><i style="left:17px;background:${col('indigo')};transform:rotate(10deg)"></i></div><div style="flex:1;min-width:0"><div class="tt">DM to Link</div><div class="ss">${week} new links this week · @fitwithtara, @aiwithnoor…</div></div><span class="badge">${week}</span>${ic('right',18,'var(--tx2)')}</button>`;
+  const notes=[['Your note','teal','Share a note'],['emily','coral','at the lake 🌅'],['jake','indigo','hmu'],['megan','purple','']].map(([n,c,t])=>`<div class="note">${t?`<i>${t}</i>`:''}${av(n,c,60)}<span>${n}</span></div>`).join('');
+  return `<div class="col">${status()}<div class="hdr"><div style="font-weight:700;font-size:20px;display:flex;align-items:center;gap:4px;flex:1">your_username ${ic('down',16,'var(--tx)')}</div>${ic('compose',24,'var(--tx)')}</div>
+  <div class="body" id="body" style="padding-bottom:${before?120:190}px"><div class="search">${ic('search',18,'var(--tx2)')}<span>Search</span></div><div class="notes">${notes}</div><div class="mh">Messages<span>Requests</span></div>${list}</div></div>${floatBar}${tabbar('inbox')}`;
+}
+
+const card=r=>`<div class="card" data-a="card" data-v="${r.id}"><div class="th ${r.type}" style="background:${col(r.color)}"><span class="pl">${ic(r.type==='reel'?'play':'image',12,'#fff',r.type==='reel')}</span>${r.pinned?`<span class="hr">${ic('pin',14,'#262626')}</span>`:''}${r.src==='none'?'<span class="nl">No link sent</span>':''}${r.thumb}</div><div class="n">${rt(r)}</div><div class="m">${r.type==='reel'?'Reel':'Post'} · ${dn(r.by)}</div></div>`;
+function lockedItem(g){ const sent=g.state==='sent';
+  return `<div class="lk"><div class="h">${ic(sent?'check':'lock',22,'var(--tx2)')}<div><div class="a">${sent?'Sent. Waiting for the link':'Follow '+g.by+' to unlock'}</div><div class="d">${sent?"Waiting for the creator's automation to check the follow and send the link.":g.detail}</div></div></div>${sent?'':`<button class="btn s" data-a="follow" data-v="${g.id}">I'm following</button>`}</div>`; }
+const section=(name,icon)=>{ const a=itemsFor(name); if(!a.length) return ''; return `<div class="sh"><b>${icon?ic(icon,16,'var(--tx)'):''}${name}</b><button data-a="seeall" data-v="${name}">See all</button></div><div class="hs">${(name==='Recent'?groupedRecent(a):a.map(card)).join('')}</div>`; };
+function stuff(){
+  const d=S.data;
+  if(S.searchMode){
+    const q=S.query.trim(); let inner='';
+    if(!q){ inner=S.recents.length?`<div class="rh">Recent searches<button data-a="rclear">Clear all</button></div>${S.recents.map((t,i)=>`<div class="rr"><button style="display:flex;align-items:center;gap:12px;flex:1;min-width:0" data-a="rpick" data-v="${i}">${ic('clock',20,'var(--tx2)')}<span style="font-size:15px">${t}</span></button><button class="x" data-a="rdel" data-v="${i}" aria-label="Delete">${ic('close',18,'var(--tx2)')}</button></div>`).join('')}`:`<div class="empty">No recent searches.<br>Search by what the reel was about, who sent it, or a topic.</div>`; }
+    else { const hits=d.res.filter(r=>matches(r,q)); const cm=creatorsList().filter(g=>cmatch(g,q)); inner=cm.map(creatorRow).join('')+(hits.length||cm.length?hits.map(r=>`<button class="res" data-a="card" data-v="${r.id}"><div class="tb" style="background:${col(r.color)}"></div><div><div class="n">${rt(r)}</div><div class="m">${r.type==='reel'?'Reel':'Post'} · ${dn(r.by)}, ${r.date}</div></div></button>`).join(''):`<div class="empty">Nothing matches "${q}".</div>`); }
+    return `<div class="col">${status()}<div class="sbar"><div class="search">${ic('search',18,'var(--tx)')}<input id="q" placeholder="Search what you remember" value="${S.query.replace(/"/g,'&quot;')}">${S.query?`<button data-a="qclear">${ic('close',16,'var(--tx2)')}</button>`:''}</div><button data-a="sclose">Cancel</button></div><div class="body" id="body">${inner}</div></div>${tabbar('inbox')}`;
+  }
+  const topicSecs=S.topics.filter(t=>t.on).map(t=>section(t.n)).join('');
+  return `<div class="col">${status()}<div class="hdr"><button data-a="back">${ic('back')}</button><div class="t">DM to Link</div><div class="sp"></div></div>
+  <div class="body" id="body"><button class="search" data-a="sopen">${ic('search',18,'var(--tx2)')}<span>Search what you remember</span></button>
+  <button class="wait" data-a="waiting">${ic('lock',18,'var(--tx)')}Waiting on you<span class="c">${d.gated.length}</span></button>${S.waiting?d.gated.map(lockedItem).join(''):''}
+  <button class="wait" style="margin-top:8px" data-a="pending">${ic('clock',18,'var(--tx)')}No link yet<span class="c">${d.pending.length}</span></button>${S.pendingOpen?d.pending.map(p=>`<div class="lk"><div class="h">${ic('clock',22,'var(--tx2)')}<div><div class="a">${p.by} asked for a reply</div><div class="d">${p.detail}</div></div></div><button class="btn s" data-a="pchat" data-v="${p.id}">Go to chat</button></div>`).join(''):''}
+  ${section('Pinned','pin')}${section('Recent','clock')}${creatorsSection()}${topicSecs}
+  <button class="custom" data-a="topics">Customize topics</button>
+  <button class="tuck" data-a="tuck">${ic('check',16,'var(--tx2)')}<span><b>${noiseTotal()} automated messages</b> tucked away. Still in each chat.</span>${ic('right',16,'var(--tx2)')}</button></div></div>${tabbar('inbox')}`;
+}
+function seeall(name){
+  if(name==='Creators') return creatorsAll();
+  let a=itemsFor(name); if(S.filter==='reel') a=a.filter(r=>r.type==='reel'); else if(S.filter==='post') a=a.filter(r=>r.type==='post');
+  const n=itemsFor(name).length;
+  return `<div class="col">${status()}<div class="hdr"><button data-a="back">${ic('back')}</button><div class="t">${name}</div><div class="sp"></div></div>
+  <div class="pillrow">${[['all','All'],['reel','Reels'],['post','Posts']].map(([k,l])=>`<button class="${S.filter===k?'on':''}" data-a="filter" data-v="${k}">${l}</button>`).join('')}<span style="margin-left:auto;font-size:13px;color:var(--tx2);align-self:center">${n} links</span></div>
+  <div class="body" id="body">${a.length?`<div class="grid">${a.map(card).join('')}</div>`:'<div class="empty">Nothing here for this filter.</div>'}</div></div>${tabbar('inbox')}`;
+}
+
+function chat(id){
+  const all=[...S.data.friends,...S.data.creators]; const th=all.find(x=>x.id===id)||{name:id,c:'coral',pv:''};
+  const creator=!S.data.friends.some(x=>x.id===id);
+  let inner='';
+  if(id==='fitwithtara'){
+    const msgs=S.msgs.length?S.msgs:T3();
+    const lastBtn=msgs.map((m,i)=>m.b&&m.k==='in'?i:-1).reduce((a,b)=>Math.max(a,b),-1);
+    const lastOut=msgs.map((m,i)=>m.k==='out'?i:-1).reduce((a,b)=>Math.max(a,b),-1);
+    inner=msgs.map((m,i)=>{
+      if(m.k==='date') return `<div class="date">${m.t}</div>`;
+      if(m.k==='sys') return `<div class="sys"><a>fitwithtara</a> messaged you about a comment you made on their post.<br><a data-a="seepost">See Post</a></div>`;
+      if(m.k==='out') return `<div class="out">${m.t}</div>`;
+      if(m.k==='typing') return `<div class="inr"><div class="sp"></div><div class="b typing"><i></i><i></i><i></i></div></div>`;
+      const active=m.b&&i===lastBtn&&lastOut<i&&S.msgs.length;
+      const next=msgs[i+1]; const showAv=!(next&&next.k==='in');
+      return `<div class="inr">${showAv?av(th.name,th.c,28):'<div class="sp"></div>'}<div class="stk"><div class="b ${m.hl&&S.hl?'hl':''} ${m.noise?'noise':''}" ${m.hl?'id="hlmsg"':''}>${m.t}${m.link?`<a class="lnk" data-a="cb" data-v="open">${m.link}</a>`:''}${m.b?`<div class="bt">${m.b.map(b=>`<button class="${active?'':'off'}" ${active?`data-a="cb" data-v="${b.a}"`:''}>${b.l}</button>`).join('')}</div>`:''}</div>${m.noise&&S.mode==='after'?`<div class="nt">${ic('check',11,'var(--tx2)')}Tucked away in DM to Link</div>`:''}</div></div>`;
+    }).join('');
+  } else if(id==='emily') inner=`<div class="date">TODAY</div><div class="inr">${av('Emily','coral',28)}<div class="b">are we still on for saturday??</div></div><div class="out">yes! 7pm at the usual place</div><div class="inr">${av('Emily','coral',28)}<div class="b">perfect, see you there</div></div>`;
+  else inner=`<div class="date">TODAY</div><div class="inr">${av(th.name,th.c,28)}<div class="b ${creator?'noise':''}">${th.pv}</div></div>`;
+  const fol=S.following&&id==='fitwithtara';
+  const intro=creator?`<div class="intro">${av(th.name,th.c,84,true)}<b>${th.name}</b><div class="h">${th.name}</div><div class="h">7.5K followers · 53 posts</div><div class="h">${fol?'You follow this account':"You don't follow each other on Instagram"}</div><button class="fbtn ${fol?'on':''}" data-a="follow-t">${fol?'Following':'Follow'}</button></div>`:'';
+  return `<div class="col">${status()}<div class="hdr" style="gap:14px"><button data-a="back">${ic('back',26)}</button>${av(th.name,th.c,40,creator)}<div class="cname"><b>${creator&&S.alias['@'+th.name]?S.alias['@'+th.name]:th.name}</b><span>${creator?th.name:'Active now'}</span></div>${ic('plusc',26)}${ic('phone',24)}${ic('video',26)}</div>
+  ${creator?`<div class="pills"><button>Inquire</button><button>View Profile</button></div>`:''}
+  <div class="body" id="body" style="padding-bottom:110px">${intro}<div class="msgs">${inner}</div></div></div>
+  <div class="inputbar"><span class="cam">${ic('camera',22,'#fff')}</span><span class="ph">Message…</span>${ic('mic',24,'var(--tx)')}${ic('image',24,'var(--tx)')}${ic('sticker',24,'var(--tx)')}${ic('plusc',26,'var(--tx)')}</div>`;
+}
+function sheet(){
+  const r=findRes(S.sheet); if(!r) return ''; const none=r.src==='none'||r.src==='msg';
+  const linkLine=r.src==='none'?"No link was sent. The creator said it's in their bio.":r.src==='msg'?'':r.src==='short'?`Link: ${r.link} opens ${r.expands}`:`Link: ${r.link}`;
+  const note=DET(r)+' Summary from the caption and audio.';
+  const nz=r.noise.sent+r.noise.promo;
+  return `<div class="scrim" data-a="close"></div><div class="sheet"><div class="hd"></div><div class="big" style="background:${col(r.color)}"><span class="pl">${ic(r.type==='reel'?'play':'image',12,'#fff',r.type==='reel')}</span>${r.thumb}</div>
+  <div><div class="tt">${rt(r)}</div><div class="fr">${r.alias?'Original: '+r.title+' · ':''}${r.type==='reel'?'Reel':'Post'} from ${dn(r.by)}, ${r.date}${r.tags.length?' · '+r.tags.join(', '):''}</div></div><div class="lr"><button data-a="label" data-v="res:${r.id}">${ic('compose',14,'var(--tx)')}${r.alias?'Edit label':'Add label'}</button><button data-a="creator" data-v="${r.by}">${ic('profile',14,'var(--tx)')}${dn(r.by)} · ${S.data.res.filter(x=>x.by===r.by).length} resources</button></div><div class="sm">${r.sum}</div>${r.src==='msg'?`<div class="quote">${r.msgText}</div><button class="btn s" data-a="copy">Copy text</button>`:''}<div class="src">${note}</div><div class="ln ${none?'dim':''}">${linkLine}</div>${r.more?`<div class="src">+${r.more.length} more link in the same message (${r.more.map(m=>m.l+': '+m.u).join(', ')}). The first link is the resource.</div>`:''}
+  ${nz?`<div class="nz">${ic('check',14,'var(--tx2)')}<span>${nz} automated messages from this chat are tucked away: ${r.noise.sent?r.noise.sent+' "Sent ✨"':''}${r.noise.sent&&r.noise.promo?', ':''}${r.noise.promo?r.noise.promo+' follow-up promos':''}.</span></div>`:''}
+  <div class="act">${none?'':`<button class="btn p" data-a="open" data-v="${r.id}">Open link</button>`}<button class="btn ${none?'p':'s'}" data-a="gochat" data-v="${r.id}">Go to chat</button></div>
+  <button class="btn o" data-a="pin" data-v="${r.id}">${r.pinned?'Pinned':'Pin'}</button></div>`;
+}
+const topicsSheet=()=>`<div class="scrim" data-a="close"></div><div class="sheet"><div class="hd"></div><div class="ttl2">Your topics</div><div class="cp">Topics come from the reels and posts you comment on. Turn any off to hide its row.</div><div class="tg">${S.topics.map(t=>`<button class="${t.on?'on':''}" data-a="topic" data-v="${t.n}">${t.on?ic('check',14,'currentColor'):''}${t.n}</button>`).join('')}</div><button class="btn p" data-a="close">Done</button></div>`;
+const tuckSheet=()=>`<div class="scrim" data-a="close"></div><div class="sheet"><div class="hd"></div><div class="ttl2">Tucked away</div><div class="cp">DM to Link keeps automated noise out of your way. Nothing is deleted. Each message is still in its chat.</div>
+  <div><div class="nzrow"><span>"Sent ✨" and "Check your DMs 📩" replies</span><span>14</span></div><div class="nzrow"><span>Follow-up promos</span><span>9</span></div><div class="nzrow"><span>Reminders and expiry nudges</span><span>5</span></div><div class="nzrow"><span>Your own button taps</span><span>3</span></div></div>
+  <div class="cp">Public "Sent ✨" replies under your comments stay in the post's comments and notifications.</div><button class="btn p" data-a="close">Got it</button></div>`;
+
+/* ---------- render + events ---------- */
+function markup(){
+  const c=cur(); let h='';
+  if(c==='feed')h=feed(); else if(c==='inbox')h=inbox(); else if(c==='stuff')h=stuff(); else if(c.startsWith('cat:'))h=seeall(c.slice(4)); else if(c.startsWith('cr:'))h=creatorScreen(c.slice(3)); else if(c.startsWith('chat:'))h=chat(c.slice(5));
+  const notif=S.notif==='reply'?`<div class="notif" data-a="opennotif">${av('fitwithtara','coral',40,true)}<div class="m"><b>fitwithtara</b> replied to your comment: Sent ✨<div class="n">now</div></div></div>`:S.notif==='dm'?`<div class="notif" data-a="opennotif">${av('fitwithtara','coral',40,true)}<div class="m"><b>fitwithtara</b> messaged you about your comment<div class="n">now</div></div></div>`:'';
+  return `<div class="island"></div>${h}${S.comments?commentsSheet():''}${S.sheet?sheet():''}${S.topicsSheet?topicsSheet():''}${S.label?labelSheet():''}${S.tuckSheet?tuckSheet():''}${notif}${S.toast?`<div class="toast">${S.toast}</div>`:''}`;
+}
+function render(keep=true){
+  const scr=document.getElementById('screen'); scr.dataset.t=THEME;
+  const old=document.getElementById('body'); const st=old&&keep?old.scrollTop:0; const c=cur();
+  scr.innerHTML=markup();
+  const b=document.getElementById('body'); if(b) b.scrollTop=st;
+  if(c.startsWith('chat:')&&b&&!S.hl) b.scrollTop=b.scrollHeight;
+  if(S.flash){ const el=document.querySelector(`[data-id="${S.flash}"]`); if(el) el.scrollIntoView({block:'center'}); }
+  if(S.hl){ const el=document.getElementById('hlmsg'); if(el) el.scrollIntoView({block:'center'}); }
+  if(S.searchMode){ const q=document.getElementById('q'); if(q&&document.activeElement!==q){ q.focus(); q.setSelectionRange(q.value.length,q.value.length); } }
+  if(S.label){ const l=document.getElementById('lin'); if(l&&document.activeElement!==l){ l.focus(); l.setSelectionRange(l.value.length,l.value.length); } }
+  panel();
+}
+const scr=document.getElementById('screen');
+scr.addEventListener('click',e=>{
+  const t=e.target.closest('[data-a]'); if(!t) return; const a=t.dataset.a,v=t.dataset.v;
+  if(a==='go') S.stack.push(v);
+  else if(a==='tab'){ if(v==='home') S.stack=['feed']; else if(v==='inbox') S.stack=['inbox']; else toast('Not part of this prototype'); S.notif=null; S.sheet=null; S.comments=false; S.searchMode=false; }
+  else if(a==='back'){ if(S.stack.length>1) S.stack.pop(); S.hl=false; }
+  else if(a==='chat'){ S.stack.push('chat:'+v); S.hl=false; if(v==='fitwithtara'&&!S.msgs.length) S.msgs=T3(); }
+  else if(a==='comments'){ S.comments=true; S.notif=null; }
+  else if(a==='fill'){ S.draft=v; render(false); const i=document.getElementById('cin'); if(i){i.focus();i.setSelectionRange(v.length,v.length);} return; }
+  else if(a==='post'){ if(!S.draft.trim()) return; S.postedText=S.draft.trim(); const hit=/guide/i.test(S.postedText); S.commented=true; S.draft='';
+    if(hit){ S.msgs=T0(); setTimeout(()=>{S.replied=true;render();},900); setTimeout(()=>{S.notif='reply';render();},1800); setTimeout(()=>{S.notif='dm';render();},4600); } else toast('Posted'); }
+  else if(a==='opennotif'){ if(S.notif==='reply'){ S.notif=null; S.comments=true; } else { S.notif=null; S.comments=false; S.stack=['feed','inbox','chat:fitwithtara']; S.hl=false; } }
+  else if(a==='seepost') S.stack=['feed'];
+  else if(a==='follow-t') S.following=!S.following;
+  else if(a==='cb'){ threadAction(v); return; }
+  else if(a==='waiting') S.waiting=!S.waiting;
+  else if(a==='sopen') S.searchMode=true;
+  else if(a==='sclose'){ S.searchMode=false; S.query=''; }
+  else if(a==='qclear'){ S.query=''; }
+  else if(a==='rpick'){ S.query=S.recents[+v]; }
+  else if(a==='rdel'){ S.recents.splice(+v,1); }
+  else if(a==='rclear'){ S.recents=[]; }
+  else if(a==='seeall'){ S.filter='all'; S.stack.push('cat:'+v); }
+  else if(a==='filter') S.filter=v;
+  else if(a==='topics') S.topicsSheet=true;
+  else if(a==='topic'){ const tp=S.topics.find(x=>x.n===v); tp.on=tp.on?0:1; }
+  else if(a==='tuck') S.tuckSheet=true;
+  else if(a==='copy') toast('Copied');
+  else if(a==='creator'){ S.sheet=null; S.searchMode=false; S.stack.push('cr:'+v); }
+  else if(a==='label'){ const k=v.split(':')[0],id=v.slice(v.indexOf(':')+1); S.label={kind:k,id}; S.labelDraft=k==='res'?(findRes(id).alias||''):(S.alias[id]||''); }
+  else if(a==='lfill'){ S.labelDraft=v; render(false); const i=document.getElementById('lin'); if(i){i.focus();i.setSelectionRange(v.length,v.length);} return; }
+  else if(a==='lsave'||a==='lremove'){ const d=a==='lremove'?'':S.labelDraft.trim(); if(S.label.kind==='res'){ findRes(S.label.id).alias=d||undefined; } else if(d) S.alias[S.label.id]=d; else delete S.alias[S.label.id]; S.label=null; toast(d?'Label saved':'Label removed'); }
+  else if(a==='lclose') S.label=null;
+  else if(a==='pending') S.pendingOpen=!S.pendingOpen;
+  else if(a==='pchat'){ const p=S.data.pending.find(x=>x.id===v); S.stack=['inbox','stuff','chat:'+p.by.replace('@','')]; S.hl=false; }
+  else if(a==='card'){ if(ct){ clearTimeout(ct); ct=null; pin(v); render(); return; } ct=setTimeout(()=>{ ct=null; S.sheet=v; render(); },240); return; }
+  else if(a==='close'){ S.sheet=null; S.comments=false; S.topicsSheet=false; S.tuckSheet=false; }
+  else if(a==='pin') pin(v);
+  else if(a==='open'){ const r=findRes(v); toast('Opening '+(r?(r.expands||r.link):'link')); }
+  else if(a==='gochat'){ const r=findRes(v); S.sheet=null; S.searchMode=false; S.stack=['inbox','stuff','chat:'+r.by.replace('@','')]; S.hl=true; if(r.by==='@fitwithtara') S.msgs=T3(); }
+  else if(a==='follow'){ const g=S.data.gated.find(x=>x.id===v); g.state='sent'; setTimeout(()=>unlock(v),1800); }
+  render();
+});
+scr.addEventListener('input',e=>{
+  if(e.target.id==='q'){ S.query=e.target.value; const p=e.target.selectionStart; render(false); const q=document.getElementById('q'); q.focus(); q.setSelectionRange(p,p); }
+  if(e.target.id==='lin'){ S.labelDraft=e.target.value; const p=e.target.selectionStart; render(false); const l=document.getElementById('lin'); l.focus(); l.setSelectionRange(p,p); }
+  if(e.target.id==='cin'){ S.draft=e.target.value; const p=e.target.selectionStart; render(false); const i=document.getElementById('cin'); i.focus(); i.setSelectionRange(p,p); }
+});
+scr.addEventListener('keydown',e=>{
+  if(e.target.id==='q'&&e.key==='Enter'){ const q=S.query.trim(); if(q&&!S.recents.includes(q)){ S.recents.unshift(q); S.recents=S.recents.slice(0,6); toast('Saved to recent searches'); render(); } }
+  if(e.target.id==='lin'&&e.key==='Enter'){ scr.querySelector('[data-a=lsave]').click(); }
+  if(e.target.id==='cin'&&e.key==='Enter'){ scr.querySelector('[data-a=post]').click(); }
+});
+function pin(id){ const r=findRes(id); if(!r) return; r.pinned=!r.pinned; toast(r.pinned?"Pinned. It'll stay at the top.":'Unpinned'); }
+function unlock(id){ const i=S.data.gated.findIndex(x=>x.id===id); if(i<0) return; const g=S.data.gated.splice(i,1)[0]; S.data.res.push(g.res); toast("Unlocked. It's in Recent."); render(); }
+
+/* ---------- panel: story + concept index ---------- */
+const AFTER={mode:'after',following:true,msgs:T3()};
+const STORY=[
+ ['Feed',()=>reset({stack:['feed']})],
+ ['Comment on the reel',()=>reset({stack:['feed'],comments:true})],
+ ['Creator auto-reply + DM arrives',()=>reset({stack:['feed'],comments:true,commented:true,replied:true,postedText:'GUIDE',notif:'reply',msgs:T0()})],
+ ['Automation thread opens',()=>reset({stack:['feed','inbox','chat:fitwithtara'],commented:true,replied:true,msgs:T0()})],
+ ['Follow gate',()=>reset({stack:['feed','inbox','chat:fitwithtara'],commented:true,replied:true,msgs:T1()})],
+ ['Link delivered, then "Sent ✨"',()=>reset({stack:['feed','inbox','chat:fitwithtara'],commented:true,replied:true,following:true,msgs:T2()})],
+ ['Weeks later: flooded inbox',()=>reset({mode:'before',stack:['inbox'],commented:true,msgs:T3()})],
+ ['Hunting for Emily',()=>reset({mode:'before',stack:['inbox'],flash:'emily',msgs:T3()})],
+ ['Digging for the link',()=>reset({mode:'before',stack:['inbox','chat:fitwithtara'],following:true,msgs:T3()})],
+ ['With DM to Link: friends first',()=>reset(Object.assign({stack:['inbox']},AFTER))],
+ ['DM to Link',()=>reset(Object.assign({stack:['inbox','stuff']},AFTER))],
+ ['Resource card',()=>reset(Object.assign({stack:['inbox','stuff'],sheet:'r6'},AFTER))],
+ ['Go to chat',()=>reset(Object.assign({stack:['inbox','stuff','chat:fitwithtara'],hl:true},AFTER))]
+];
+const EXTRA=[
+ ['Search and browse',[
+  ['—','Recent searches (delete one)',()=>reset(Object.assign({stack:['inbox','stuff'],searchMode:true},AFTER))],
+  ['—','Search by memory',()=>reset(Object.assign({stack:['inbox','stuff'],searchMode:true,query:'that pasta thing'},AFTER))],
+  ['—','See all: Cooking',()=>reset(Object.assign({stack:['inbox','stuff','cat:Cooking']},AFTER))],
+  ['—','Customize topics',()=>reset(Object.assign({stack:['inbox','stuff'],topicsSheet:true},AFTER))],
+  ['—','Noise tucked away',()=>reset(Object.assign({stack:['inbox','stuff'],tuckSheet:true},AFTER))]],'v1'],
+ ['Edge cases',[
+  ['E1','Waiting on you',()=>reset(Object.assign({stack:['inbox','stuff']},AFTER))],
+  ['E2','Gated resource (tap "I\'m following")',()=>reset(Object.assign({stack:['inbox','stuff'],waiting:true},AFTER))],
+  ['E3','No link sent',()=>reset(Object.assign({stack:['inbox','stuff'],sheet:'r9'},AFTER))],
+  ['—','Link found in text',()=>reset(Object.assign({stack:['inbox','stuff'],sheet:'r7'},AFTER))],
+  ['—','Shortened link',()=>reset(Object.assign({stack:['inbox','stuff'],sheet:'r8'},AFTER))],
+  ['—','Link found in a button',()=>reset(Object.assign({stack:['inbox','stuff'],sheet:'r6'},AFTER))],
+  ['—','Resource typed in the message',()=>reset(Object.assign({stack:['inbox','stuff'],sheet:'r19'},AFTER))],
+  ['—','Two links in one message',()=>reset(Object.assign({stack:['inbox','stuff'],sheet:'r3'},AFTER))],
+  ['—','No link yet (typed gate, no button)',()=>reset(Object.assign({stack:['inbox','stuff'],pendingOpen:true},AFTER))],
+  ['—','Pin (double-click a card)',()=>reset(Object.assign({stack:['inbox','stuff']},AFTER))]],'v1'],
+ ['Labels and creators',[
+  ['—','Creators you engaged with: See all',()=>reset(Object.assign({stack:['inbox','stuff','cat:Creators']},AFTER))],
+  ['—','Creator page, 3 resources',()=>reset(Object.assign({stack:['inbox','stuff','cr:@15minkitchen']},AFTER))],
+  ['—','Label a resource',()=>reset(Object.assign({stack:['inbox','stuff'],sheet:'r6',label:{kind:'res',id:'r6'},labelDraft:''},AFTER))],
+  ['—','Label a creator',()=>reset(Object.assign({stack:['inbox','stuff','cr:@fitwithtara'],label:{kind:'cr',id:'@fitwithtara'},labelDraft:''},AFTER))],
+  ['—','Labels applied',()=>{ reset(Object.assign({stack:['inbox','stuff'],alias:{'@fitwithtara':'Tara (gym)','@15minkitchen':'Quick dinners'}},AFTER)); S.data.res.find(r=>r.id==='r6').alias='Glute plan'; S.data.res.find(r=>r.id==='r5').alias='that pasta thing'; }]],'v1']
+];
+let FI=[];
+function panel(){
+  const p=document.getElementById('panel'); FI=[];
+  const reg=fn=>{FI.push(fn);return FI.length-1;};
+  const nextI=S.step===null?0:Math.min(S.step+1,STORY.length-1);
+  p.innerHTML=`<button class="pclose" data-mm="close">Close</button><h1>creatorDM</h1><p class="sub">DM to Link: creator links that stop burying your friends. Starts where a real creator interaction starts, in the feed.</p>
+  <div class="lab">Theme</div><div class="seg"><button class="${THEME==='dark'?'on':''}" data-th="dark">Dark</button><button class="${THEME==='light'?'on':''}" data-th="light">Light</button></div>
+  <div class="lab">Inbox shows</div><div class="seg"><button class="${S.mode==='before'?'on':''}" data-m="before">Before</button><button class="${S.mode==='after'?'on':''}" data-m="after">After (DM to Link)</button></div>
+  <h2>The story</h2><button class="next" data-n="${nextI}">${S.step===null?'Start: open the feed':S.step>=STORY.length-1?'Restart':'Next: '+STORY[nextI][0]}</button>
+  <div class="idx">${STORY.map(([n],i)=>`<button class="${S.step===i?'cur':''}" data-s="${i}"><b>${i+1}</b>${n}</button>`).join('')}</div>
+  ${EXTRA.map(([g,items])=>`<h2>${g}</h2><div class="idx">${items.map(([k,n,fn])=>`<button data-f="${reg(fn)}"><b>${k}</b>${n}</button>`).join('')}</div>`).join('')}
+  <p class="foot">Tap through the feed, comment sheet, thread buttons, the floating DM to Link banner, cards, See all, search and sheets. Double-click a card to pin it. The DM thread follows a real comment-to-DM automation, noise included. Educational concept by Archana Raghu Prasad. Not affiliated with Meta. Handles and people are invented.</p>`;
+  const nx=document.querySelector('#mbar .nx'); if(nx) nx.textContent=S.step===null?'Start the story':S.step>=STORY.length-1?'Restart':'Next: '+STORY[nextI][0];
+}
+document.getElementById('panel').addEventListener('click',e=>{
+  const th=e.target.closest('[data-th]'); if(th){ THEME=th.dataset.th; render(); return; }
+  const m=e.target.closest('[data-m]'); if(m){ S.mode=m.dataset.m; render(); return; }
+  const n=e.target.closest('[data-n]'); if(n){ const i=+n.dataset.n; if(S.step!==null&&S.step>=STORY.length-1){ STORY[0][1](); S.step=0; } else { STORY[i][1](); S.step=i; } render(false); return; }
+  const s=e.target.closest('[data-s]'); if(s){ const i=+s.dataset.s; STORY[i][1](); S.step=i; render(false); return; }
+  const f=e.target.closest('[data-f]'); if(f){ FI[+f.dataset.f](); S.step=null; render(false); }
+});
+function fit(){ const el=document.getElementById('scaler');
+  if(matchMedia('(max-width:820px)').matches){ const s=Math.min(1,(innerHeight-28-56)/874,innerWidth/402); el.style.transform=`scale(${s})`; el.style.margin=`${(874*s-874)/2}px ${(402*s-402)/2}px`; }
+  else { const s=Math.min(1,(innerHeight-24)/894,(innerWidth-310-24)/422); el.style.transform=`scale(${s})`; el.style.margin=`${(894*s-894)/2}px ${(422*s-422)/2}px`; } }
+function nextStep(){ if(S.step!==null&&S.step>=STORY.length-1){ STORY[0][1](); S.step=0; } else { const i=S.step===null?0:S.step+1; STORY[i][1](); S.step=i; } render(false); }
+document.getElementById('mbar').addEventListener('click',e=>{ const b=e.target.closest('[data-mm]'); if(!b) return; if(b.dataset.mm==='menu') document.body.classList.add('menu-open'); else if(b.dataset.mm==='next') nextStep(); });
+document.getElementById('panel').addEventListener('click',e=>{ if(e.target.closest('[data-mm=close],[data-s],[data-n],[data-f]')) document.body.classList.remove('menu-open'); });
+if(/menu/.test(location.search)) document.body.classList.add('menu-open');
+addEventListener('resize',fit); fit(); render();
+{ const n=parseInt(location.hash.slice(1),10); if(!isNaN(n)&&STORY[n]){ STORY[n][1](); S.step=n; render(false); }
+  const x=location.hash.match(/^#x(\d+)/); if(x&&FI[+x[1]]){ FI[+x[1]](); render(false); }
+  if(/light/.test(location.search)){ THEME='light'; render(); } } // #0..#12 story step, #x0.. extras, ?light
+
+/* ---------- shot mode (?shot=N): one bare screen at 402x874, for PDF and Figma captures ---------- */
+{ const m=location.search.match(/shot=(\d+)/); if(m){ const CAPS=STORY.map(([n,fn])=>[n,fn]).concat(EXTRA.flatMap(([g,items])=>items.map(([k,n,fn])=>[g+': '+n,fn])));
+  const cap=CAPS[+m[1]]; if(cap){ cap[1](); document.body.classList.add('shot'); const w=document.createElement('div'); w.className='screen'; w.dataset.t=/light/.test(location.search)?'light':'dark'; w.style.borderRadius='0'; w.innerHTML=markup(); document.body.appendChild(w);
+    const b=w.querySelector('.body'); if(b&&cur().startsWith('chat:')&&!S.hl) b.scrollTop=b.scrollHeight; const fl=w.querySelector('#hlmsg'); if(fl&&S.hl) fl.scrollIntoView({block:'center'});
+    const sc=location.search.match(/scroll=(\d+)/); if(sc&&b) b.scrollTop=+sc[1]; } } }
+
+/* ---------- board mode (?board): every screen side by side, for one-shot capture into Figma ---------- */
+if(/board/.test(location.search)){
+  document.body.classList.add('board');
+  const CAPS=STORY.map(([n,fn])=>[n,fn]).concat(EXTRA.flatMap(([g,items])=>items.map(([k,n,fn])=>[g+': '+n,fn])));
+  const wrap=document.createElement('div'); wrap.className='boardwrap'; document.body.appendChild(wrap);
+  CAPS.forEach(([n,fn],i)=>{
+    fn(); const cell=document.createElement('div'); cell.className='cell';
+    cell.innerHTML=`<div class="bl">${i+1}. ${n}</div><div class="screen" data-t="${THEME}" style="border-radius:0">${markup()}</div>`;
+    wrap.appendChild(cell);
+    const b=cell.querySelector('.body'); if(b&&cur().startsWith('chat:')&&!S.hl) b.scrollTop=b.scrollHeight;
+    const fl=cell.querySelector('#hlmsg'); if(fl&&S.hl) fl.scrollIntoView({block:'center'});
+  });
+}
+</script>
+</body>
+</html>
