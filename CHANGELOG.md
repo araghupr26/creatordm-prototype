@@ -11,8 +11,27 @@ Commits made after this file was generated are listed the next time it is regene
 - `2695f5e` `v0.1.0` Add DM to Link concept prototype (2026-10-04)
 - `919f4ee` Link the live site from the README (2026-10-04)
 - `66035f1` feat(prototype): consistent creator threads and Before/After story (2026-10-04)
+- `6a31030` docs(changelog): add changelog with diffs between commits (2026-10-04)
+- `d6c8c2d` docs: add v4 concept PDF and link it from the README (2026-10-04)
 
 ## What changed in each commit
+
+### `d6c8c2d` docs: add v4 concept PDF and link it from the README
+2026-10-04. 2 files changed, 2 insertions(+)
+
+- modified `README.md`
+- added `docs/ig-resource-inbox-flows-v4.pdf`
+
+### `6a31030` docs(changelog): add changelog with diffs between commits
+2026-10-04. 1 file changed, 100 insertions(+)
+
+- added `CHANGELOG.md`
+
+```text
+Generate CHANGELOG.md from git history: commit list, what changed in
+each commit, a table comparing each commit with the one before it (with
+GitHub compare links), working tree status and tracked files.
+```
 
 ### `66035f1` feat(prototype): consistent creator threads and Before/After story
 2026-10-04. 1 file changed, 299 insertions(+), 187 deletions(-)
@@ -83,13 +102,15 @@ Each row compares a commit with the one before it. The compare link opens the fu
 |---|---|---|---|
 | `2695f5e` | `919f4ee` | 1 file changed, 3 insertions(+), 1 deletion(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/2695f5e...919f4ee) |
 | `919f4ee` | `66035f1` | 1 file changed, 299 insertions(+), 187 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/919f4ee...66035f1) |
+| `66035f1` | `6a31030` | 1 file changed, 100 insertions(+) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/66035f1...6a31030) |
+| `6a31030` | `d6c8c2d` | 2 files changed, 2 insertions(+) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/6a31030...d6c8c2d) |
 
-Across the whole history: `2695f5e` to `66035f1`: 2 files changed, 302 insertions(+), 188 deletions(-). [compare](https://github.com/araghupr26/creatordm-prototype/compare/2695f5e...66035f1)
+Across the whole history: `2695f5e` to `d6c8c2d`: 4 files changed, 404 insertions(+), 188 deletions(-). [compare](https://github.com/araghupr26/creatordm-prototype/compare/2695f5e...d6c8c2d)
 
 ## Current working tree status
 
 ```
-?? CHANGELOG.md
+clean, nothing to commit
 ```
 
 ## Tracked files
@@ -97,4 +118,5 @@ Across the whole history: `2695f5e` to `66035f1`: 2 files changed, 302 insertion
 - `.gitignore`: Keeps macOS .DS_Store files out of the repository.
 - `CHANGELOG.md`: This file. Regenerated from git history, with diff summaries between commits.
 - `README.md`: What the prototype is, the live site link, and the URL options.
+- `docs/ig-resource-inbox-flows-v4.pdf`: Tracked file.
 - `index.html`: The whole prototype: one self-contained HTML file with styles and script, no build step.
