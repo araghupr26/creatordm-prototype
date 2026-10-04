@@ -2,11 +2,13 @@
 
 A clickable concept prototype for DM to Link, a library for the links and resources that creators send through comment-to-DM automations. It starts in a feed, follows a real comment-to-DM flow, shows the flooded inbox that results, and then shows the DM to Link fix.
 
+**Live site: https://araghupr26.github.io/creatordm-prototype/**
+
 Educational concept by Archana Raghu Prasad. Not affiliated with Meta or Instagram. Handles and people are invented. All data is fake, and nothing here detects links from real messages.
 
 ## Use it
 
-Open `index.html` in a browser, or visit the GitHub Pages site for this repo.
+Open the live site above, or open `index.html` from a download in a browser. The code view on github.com shows the source only. The site runs at the `github.io` address.
 
 On a desktop, the left panel walks through the story and lists extra screens. On a phone, use the Menu and Next bar at the bottom.
 
