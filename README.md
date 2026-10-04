@@ -4,6 +4,8 @@ A clickable concept prototype for DM to Link, a library for the links and resour
 
 **Live site: https://araghupr26.github.io/creatordm-prototype/**
 
+Concept document (14 pages, flows, delivery rules, edge cases, proposed scope): [docs/ig-resource-inbox-flows-v4.pdf](docs/ig-resource-inbox-flows-v4.pdf)
+
 Educational concept by Archana Raghu Prasad. Not affiliated with Meta or Instagram. Handles and people are invented. All data is fake, and nothing here detects links from real messages.
 
 ## Use it
