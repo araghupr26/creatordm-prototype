@@ -13,8 +13,24 @@ Commits made after this file was generated are listed the next time it is regene
 - `66035f1` feat(prototype): consistent creator threads and Before/After story (2026-10-04)
 - `6a31030` docs(changelog): add changelog with diffs between commits (2026-10-04)
 - `d6c8c2d` docs: add v4 concept PDF and link it from the README (2026-10-04)
+- `c156479` docs(changelog): add the v4 PDF commit (2026-10-04)
+- `046eab6` fix(prototype): make reel and post treatment consistent (2026-10-04)
 
 ## What changed in each commit
+
+### `046eab6` fix(prototype): make reel and post treatment consistent
+2026-10-04. 1 file changed, 15 insertions(+), 12 deletions(-)
+
+- modified `index.html`
+
+```text
+One card frame for reels and posts, the Reel marker on every reel in the feed, the same type chip on the resource card, and wording that matches the type.
+```
+
+### `c156479` docs(changelog): add the v4 PDF commit
+2026-10-04. 1 file changed, 24 insertions(+), 2 deletions(-)
+
+- modified `CHANGELOG.md`
 
 ### `d6c8c2d` docs: add v4 concept PDF and link it from the README
 2026-10-04. 2 files changed, 2 insertions(+)
@@ -104,8 +120,10 @@ Each row compares a commit with the one before it. The compare link opens the fu
 | `919f4ee` | `66035f1` | 1 file changed, 299 insertions(+), 187 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/919f4ee...66035f1) |
 | `66035f1` | `6a31030` | 1 file changed, 100 insertions(+) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/66035f1...6a31030) |
 | `6a31030` | `d6c8c2d` | 2 files changed, 2 insertions(+) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/6a31030...d6c8c2d) |
+| `d6c8c2d` | `c156479` | 1 file changed, 24 insertions(+), 2 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/d6c8c2d...c156479) |
+| `c156479` | `046eab6` | 1 file changed, 15 insertions(+), 12 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/c156479...046eab6) |
 
-Across the whole history: `2695f5e` to `d6c8c2d`: 4 files changed, 404 insertions(+), 188 deletions(-). [compare](https://github.com/araghupr26/creatordm-prototype/compare/2695f5e...d6c8c2d)
+Across the whole history: `2695f5e` to `046eab6`: 4 files changed, 438 insertions(+), 197 deletions(-). [compare](https://github.com/araghupr26/creatordm-prototype/compare/2695f5e...046eab6)
 
 ## Current working tree status
 
