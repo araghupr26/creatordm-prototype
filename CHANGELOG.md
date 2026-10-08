@@ -15,8 +15,36 @@ Commits made after this file was generated are listed the next time it is regene
 - `d6c8c2d` docs: add v4 concept PDF and link it from the README (2026-10-04)
 - `c156479` docs(changelog): add the v4 PDF commit (2026-10-04)
 - `046eab6` fix(prototype): make reel and post treatment consistent (2026-10-04)
+- `346349c` docs(changelog): add the reel and post consistency fix (2026-10-04)
+- `d6c111c` feat(prototype): rename to Drops, message requests, in-app browser, per-post summaries, lists and aliases (2026-10-07)
+- `0d68b7a` docs: add Drops concept deck v5 and the PRD (2026-10-07)
 
 ## What changed in each commit
+
+### `0d68b7a` docs: add Drops concept deck v5 and the PRD
+2026-10-07. 3 files changed, 340 insertions(+), 4 deletions(-)
+
+- modified `README.md`
+- added `docs/PRD.md`
+- added `docs/drops-concept-v5.pdf`
+
+### `d6c111c` feat(prototype): rename to Drops, message requests, in-app browser, per-post summaries, lists and aliases
+2026-10-07. 1 file changed, 230 insertions(+), 103 deletions(-)
+
+- modified `index.html`
+
+```text
+- rename DM to Link to Drops across the prototype
+- requests skip Accept in After and land in Waiting on you; one follow check
+- iPhone 17 frame with home indicator, mixed crowded inbox, message pop-in
+- in-app browser mock on every link action; one-line summary replaces Details
+- aliases, flat lists, emoji row, motion pass, design-review fixes
+```
+
+### `346349c` docs(changelog): add the reel and post consistency fix
+2026-10-04. 1 file changed, 19 insertions(+), 1 deletion(-)
+
+- modified `CHANGELOG.md`
 
 ### `046eab6` fix(prototype): make reel and post treatment consistent
 2026-10-04. 1 file changed, 15 insertions(+), 12 deletions(-)
@@ -122,8 +150,11 @@ Each row compares a commit with the one before it. The compare link opens the fu
 | `6a31030` | `d6c8c2d` | 2 files changed, 2 insertions(+) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/6a31030...d6c8c2d) |
 | `d6c8c2d` | `c156479` | 1 file changed, 24 insertions(+), 2 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/d6c8c2d...c156479) |
 | `c156479` | `046eab6` | 1 file changed, 15 insertions(+), 12 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/c156479...046eab6) |
+| `046eab6` | `346349c` | 1 file changed, 19 insertions(+), 1 deletion(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/046eab6...346349c) |
+| `346349c` | `d6c111c` | 1 file changed, 230 insertions(+), 103 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/346349c...d6c111c) |
+| `d6c111c` | `0d68b7a` | 3 files changed, 340 insertions(+), 4 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/d6c111c...0d68b7a) |
 
-Across the whole history: `2695f5e` to `046eab6`: 4 files changed, 438 insertions(+), 197 deletions(-). [compare](https://github.com/araghupr26/creatordm-prototype/compare/2695f5e...046eab6)
+Across the whole history: `2695f5e` to `0d68b7a`: 6 files changed, 957 insertions(+), 235 deletions(-). [compare](https://github.com/araghupr26/creatordm-prototype/compare/2695f5e...0d68b7a)
 
 ## Current working tree status
 
@@ -136,5 +167,7 @@ clean, nothing to commit
 - `.gitignore`: Keeps macOS .DS_Store files out of the repository.
 - `CHANGELOG.md`: This file. Regenerated from git history, with diff summaries between commits.
 - `README.md`: What the prototype is, the live site link, and the URL options.
+- `docs/PRD.md`: Tracked file.
+- `docs/drops-concept-v5.pdf`: Tracked file.
 - `docs/ig-resource-inbox-flows-v4.pdf`: Tracked file.
 - `index.html`: The whole prototype: one self-contained HTML file with styles and script, no build step.
