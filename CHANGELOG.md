@@ -18,8 +18,20 @@ Commits made after this file was generated are listed the next time it is regene
 - `346349c` docs(changelog): add the reel and post consistency fix (2026-10-04)
 - `d6c111c` feat(prototype): rename to Drops, message requests, in-app browser, per-post summaries, lists and aliases (2026-10-07)
 - `0d68b7a` docs: add Drops concept deck v5 and the PRD (2026-10-07)
+- `344e337` docs(changelog): add the Drops rename, v5 deck and PRD commits (2026-10-07)
+- `b500b14` docs(prd): rebuild the backlog as initiatives, workflow epics, stories, tasks and sub-tasks (2026-10-07)
 
 ## What changed in each commit
+
+### `b500b14` docs(prd): rebuild the backlog as initiatives, workflow epics, stories, tasks and sub-tasks
+2026-10-07. 1 file changed, 404 insertions(+), 204 deletions(-)
+
+- modified `docs/PRD.md`
+
+### `344e337` docs(changelog): add the Drops rename, v5 deck and PRD commits
+2026-10-07. 1 file changed, 34 insertions(+), 1 deletion(-)
+
+- modified `CHANGELOG.md`
 
 ### `0d68b7a` docs: add Drops concept deck v5 and the PRD
 2026-10-07. 3 files changed, 340 insertions(+), 4 deletions(-)
@@ -153,8 +165,10 @@ Each row compares a commit with the one before it. The compare link opens the fu
 | `046eab6` | `346349c` | 1 file changed, 19 insertions(+), 1 deletion(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/046eab6...346349c) |
 | `346349c` | `d6c111c` | 1 file changed, 230 insertions(+), 103 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/346349c...d6c111c) |
 | `d6c111c` | `0d68b7a` | 3 files changed, 340 insertions(+), 4 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/d6c111c...0d68b7a) |
+| `0d68b7a` | `344e337` | 1 file changed, 34 insertions(+), 1 deletion(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/0d68b7a...344e337) |
+| `344e337` | `b500b14` | 1 file changed, 404 insertions(+), 204 deletions(-) | [compare](https://github.com/araghupr26/creatordm-prototype/compare/344e337...b500b14) |
 
-Across the whole history: `2695f5e` to `0d68b7a`: 6 files changed, 957 insertions(+), 235 deletions(-). [compare](https://github.com/araghupr26/creatordm-prototype/compare/2695f5e...0d68b7a)
+Across the whole history: `2695f5e` to `b500b14`: 6 files changed, 1190 insertions(+), 235 deletions(-). [compare](https://github.com/araghupr26/creatordm-prototype/compare/2695f5e...b500b14)
 
 ## Current working tree status
 
