@@ -1,10 +1,10 @@
-# creatorDM prototype: DM to Link
+# creatorDM prototype: Drops
 
-A clickable concept prototype for DM to Link, a library for the links and resources that creators send through comment-to-DM automations. It starts in a feed, follows a real comment-to-DM flow, shows the flooded inbox that results, and then shows the DM to Link fix.
+A clickable concept prototype for Drops, a library for the links and resources that creators send through comment-to-DM automations. It starts in a feed, follows a real comment-to-DM flow, shows the flooded inbox that results, and then shows the Drops fix.
 
 **Live site: https://araghupr26.github.io/creatordm-prototype/**
 
-Concept document (14 pages, flows, delivery rules, edge cases, proposed scope): [docs/ig-resource-inbox-flows-v4.pdf](docs/ig-resource-inbox-flows-v4.pdf)
+Concept document (13 pages, flows, delivery rules, edge cases, proposed scope): [docs/drops-concept-v5.pdf](docs/drops-concept-v5.pdf). Product requirements (epics, stories, tasks, bugs): [docs/PRD.md](docs/PRD.md)
 
 Educational concept by Archana Raghu Prasad. Not affiliated with Meta or Instagram. Handles and people are invented. All data is fake, and nothing here detects links from real messages.
 
@@ -16,7 +16,7 @@ On a desktop, the left panel walks through the story and lists extra screens. On
 
 URL options:
 
-- `#0` to `#12` jumps to a step in the story.
+- `#0` to `#16` jumps to a step in the story.
 - `#x0` and up jumps to an extra screen (search, topics, edge cases, labels, creators).
 - `?light` switches to the light theme.
 - `?board` shows every screen side by side.
